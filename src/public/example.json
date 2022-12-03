@@ -1,0 +1,35 @@
+[
+    {
+        "personajes": {
+            "image": "img",
+            "name": "name",
+            "age": "age",
+            "weight": "weight",
+            "history": "history",
+            "moviesSeries": "pupulation"
+        },
+        "moviesSeries": {
+            "image": "image",
+            "title": "title",
+            "createdAt": "createdAt",
+            "rated": "rated",
+            "personajesAsosciados": "population"
+        },
+        "gender": {
+            "name": "name",
+            "images": "image",
+            "moviesSeries": "popu"
+        },
+        "users": {
+            "login": "auth/login",
+            "register": "auth/register",
+            "return": "token"
+        },
+        "characters": {
+            "img": "img",
+            "name": "name",
+            "endpoint": "/characters",
+            "crud": "crud"
+        }
+    }
+]
