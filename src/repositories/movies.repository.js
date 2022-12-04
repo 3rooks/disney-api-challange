@@ -1,15 +1,32 @@
 import { ENTITIES } from '#constants/entities.js';
 
 export class MoviesRepository {
-    constructor() {
+    constructor(persistence) {
         this.entity = ENTITIES.MOVIES;
+        this.persistence = persistence;
     }
 
-    isterUser = async () => {};
+    getMoviesByTitleAsc = async (title) =>
+        await this.persistence.getAll().sort({ title: 1 });
 
-    gUerById = async (id) => {};
+    getMoviesByTitle = async (title) =>
+        await this.persistence.getBy(this.entity, { title });
 
-    getsrBymail = async (email) => {};
+    getMoviesByGenre = async (genre) =>
+        await this.persistence.getBy(this.entity, { genre });
+
+    getMoviesByOrder = async (order) => {
+        if (order === 'asc') {
+            const movies = await this.persistence.getAll();
+            return movies.sort();
+        }
+    };
+
+    getMoviesByGenreAsc = async (genre, sort) => {
+        const movies = await this.persistence.getBy({ genre });
+        if (sort === 'desc') return await movies.sort((a, b) => a - b);
+        return await movies.sort();
+    };
 
     updeUerBd = async (id, user) => {};
 
