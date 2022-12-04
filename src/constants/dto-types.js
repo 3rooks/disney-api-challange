@@ -27,7 +27,7 @@ export const imageDTOSchema = Type.String({
  * User types
  */
 
-export const usernameDTOSchema = Type.String({
+export const usernameType = Type.String({
     minLength: 2,
     maxLength: 20,
     errorMessage: {
@@ -38,7 +38,7 @@ export const usernameDTOSchema = Type.String({
     }
 });
 
-export const emailDTOSchema = Type.String({
+export const emailType = Type.String({
     format: 'email',
     errorMessage: {
         type: '${0#} should be a string',
@@ -46,7 +46,7 @@ export const emailDTOSchema = Type.String({
     }
 });
 
-export const passwordDTOSchema = Type.String({
+export const passwordType = Type.String({
     format: 'password',
     minLength: 8,
     maxLength: 20,
