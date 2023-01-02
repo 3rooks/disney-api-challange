@@ -1,17 +1,13 @@
 import { ENTITIES } from '#constants/entities.js';
 
 export class CharacterRepository {
-    constructor() {
+    constructor(persistence) {
         this.entity = ENTITIES.CHARACTERS;
+        this.repository = persistence;
     }
 
-    isterUser = async () => {};
+    createCharacter = async (character) =>
+        await this.repository.save(this.entity, character);
 
-    gUerById = async (id) => {};
-
-    getsrBymail = async (email) => {};
-
-    updeUerBd = async (id, user) => {};
-
-    deletseByI = async (id) => {};
+    getAllCharacters = async () => await this.repository.getAll(this.entity);
 }

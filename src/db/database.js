@@ -28,7 +28,28 @@ export class MongoDataBase {
 
     getBy = async (entity, data) => await this.models[entity].findOne(data);
 
-    getAll = async (entity) => await this.models[entity].find();
+    getAllBy = async (entity, data) =>
+        await this.models[entity].aggregate([{ $match: data }]);
+
+    getAll = async (entity, proyection) =>
+        await this.models[entity].find({}, proyection);
+
+    getAllSortAsc = async (entity) => {
+        return await this.models[entity].aggregate([
+            { $sort: { createdAt: 1 } }
+        ]);
+    };
+
+    getAllSortDesc = async (entity) =>
+        await this.models[entity].aggregate([{ $sort: { createdAt: -1 } }]);
+
+    getByGenreAndOrder = async (entity, data, order) => {
+        console.log(data, order);
+        return await this.models[entity].aggregate([
+            { $match: data },
+            { $sort: { title: order } }
+        ]);
+    };
 
     getById = async (entity, id) => await this.models[entity].findById(id);
 

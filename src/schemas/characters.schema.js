@@ -34,7 +34,7 @@ const characterSchema = new Schema(
                 _id: {
                     _id: false
                 },
-                movies: {
+                movie: {
                     type: Schema.Types.String,
                     ref: ENTITIES.MOVIES
                 }

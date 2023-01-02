@@ -1,21 +1,10 @@
+import { characterCtrl } from '#controllers/characters.controller.js';
 import { Router } from 'express';
 
 const charactersRoute = Router();
 
-charactersRoute.get('/', (req, res) => {
-    return res.send('hello');
-});
+charactersRoute.get('/characters', characterCtrl.getCharacter);
 
-charactersRoute.post('/', (req, res) => {
-    return res.send('hello');
-});
-
-charactersRoute.patch('/', (req, res) => {
-    return res.send('hello');
-});
-
-charactersRoute.delete('/', (req, res) => {
-    return res.send('hello');
-});
+charactersRoute.post('/characters', characterCtrl.postCharacter);
 
 export default charactersRoute;

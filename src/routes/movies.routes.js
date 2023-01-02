@@ -1,14 +1,11 @@
-import { moviesCtrl } from '#controllers/movies.controller.js';
-import { validateQuery } from '#dtos/movies/query-params.js';
+import { createMovieCtrl, getMovies } from '#controllers/movies.controller.js';
 import { Router } from 'express';
 
 const moviesRoute = Router();
 
-moviesRoute.get('/movies', validateQuery, moviesCtrl);
+moviesRoute.get('/movies', getMovies);
 
-moviesRoute.post('/', (req, res) => {
-    return res.send('hello');
-});
+moviesRoute.post('/movies', createMovieCtrl);
 
 moviesRoute.patch('/', (req, res) => {
     return res.send('hello');
