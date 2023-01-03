@@ -4,7 +4,7 @@ import uuidv4 from 'uuid-random';
 
 const { Schema, model } = mongoose;
 
-const characterSchema = new Schema(
+const genderSchema = new Schema(
     {
         _id: {
             _id: false,
@@ -21,14 +21,6 @@ const characterSchema = new Schema(
             type: String,
             require: true
         },
-        age: {
-            type: Number,
-            require: true
-        },
-        history: {
-            type: String,
-            require: true
-        },
         movies: [
             {
                 _id: {
@@ -41,7 +33,10 @@ const characterSchema = new Schema(
             }
         ]
     },
-    { timestamps: true, versionKey: false }
+    {
+        timestamps: true,
+        versionKey: false
+    }
 );
 
-export const characterModel = model(ENTITIES.CHARACTERS, characterSchema);
+export const genderModel = model(ENTITIES.GENDERS, genderSchema);

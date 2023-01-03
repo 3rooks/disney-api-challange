@@ -1,5 +1,4 @@
 import { ENTITIES } from '#constants/entities.js';
-import { GENDERS } from '#constants/film-genres.js';
 import mongoose from 'mongoose';
 import uuidv4 from 'uuid-random';
 
@@ -13,11 +12,12 @@ const movieSchema = new Schema(
             unique: true,
             default: () => uuidv4()
         },
-        image: {
-            type: String,
-            require: true
-        },
         title: {
+            type: String,
+            require: true,
+            unique: true
+        },
+        image: {
             type: String,
             require: true
         },
@@ -29,11 +29,15 @@ const movieSchema = new Schema(
             type: Number,
             require: true
         },
-        gender: {
-            type: String,
-            enum: GENDERS,
-            require: true
-        },
+        gender: [
+            {
+                _id: { _id: false },
+                gender: {
+                    type: Schema.Types.String,
+                    ref: ENTITIES.GENDERS
+                }
+            }
+        ],
         characters: [
             {
                 _id: { _id: false },

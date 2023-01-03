@@ -1,5 +1,6 @@
 import { ENTITIES } from '#constants/entities.js';
 import { characterModel } from '#schemas/characters.schema.js';
+import { genderModel } from '#schemas/genders.schema.js';
 import { movieModel } from '#schemas/movies.schema.js';
 import { userModel } from '#schemas/users.schema.js';
 import mongoose from 'mongoose';
@@ -10,6 +11,7 @@ export class MongoDataBase {
         this.models = {
             [ENTITIES.USERS]: userModel,
             [ENTITIES.MOVIES]: movieModel,
+            [ENTITIES.GENDERS]: genderModel,
             [ENTITIES.CHARACTERS]: characterModel
         };
     }

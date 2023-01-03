@@ -1,0 +1,72 @@
+[
+    {
+        "title": "sleeping beauty",
+        "image": "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/d7aeSm6RgJySwelL5tdu1TCclZh.jpg",
+        "rated": 7,
+        "releaseYear": 1959,
+        "gender": "fantasy"
+    },
+    {
+        "title": "cinderella",
+        "image": "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/5kqNkGE5PFt4EOloc90LMUoXqxb.jpg",
+        "rated": 7,
+        "releaseYear": 1950,
+        "gender": "fantasy"
+    },
+    {
+        "title": "the little mermaid",
+        "image": "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/3hBEYJfPKq1iXXGkeNV0n6baTFF.jpg",
+        "rated": 8,
+        "releaseYear": 1989,
+        "gender": "fantasy"
+    },
+    {
+        "title": "snow white and the seven dwarfs",
+        "image": "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/b2ZPP3bZqDOzqTHr1TlFIFPWP48.jpg",
+        "rated": 8,
+        "releaseYear": 1937,
+        "gender": "fantasy"
+    },
+    {
+        "title": "beauty and the beast",
+        "image": "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/1FxMtEUc6DP1MXsTBftOFaoCVVO.jpg",
+        "rated": 8,
+        "releaseYear": 1991,
+        "gender": "fantasy"
+    },
+    {
+        "title": "dumbo",
+        "image": "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/xFoXi2iVwyOtJr1PD5nDVSkpkVo.jpg",
+        "rated": 7,
+        "releaseYear": 1941,
+        "gender": "fantasy"
+    },
+    {
+        "title": "peter pan",
+        "image": "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/tDvGRWSdqT31ADijJf9OhbTbQ77.jpg",
+        "rated": 7,
+        "releaseYear": 1953,
+        "gender": "fantasy"
+    },
+    {
+        "title": "lady and the tramp",
+        "image": "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/j4in9pWwnYeXyf1Z3303nXbzFAS.jpg",
+        "rated": 7,
+        "releaseYear": 1955,
+        "gender": "fantasy"
+    },
+    {
+        "title": "pocahontas",
+        "image": "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/o8QGvm0zDrJ8aONM8G5dW4BNawG.jpg",
+        "rated": 2,
+        "releaseYear": 1995,
+        "gender": "fantasy"
+    },
+    {
+        "title": "song of the south",
+        "image": "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/19JLCKu7axOeNhT6a20QDPa4Occ.jpg",
+        "rated": 7,
+        "releaseYear": 1946,
+        "gender": "fantasy"
+    }
+]
