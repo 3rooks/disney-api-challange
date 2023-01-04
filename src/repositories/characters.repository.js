@@ -1,6 +1,6 @@
 import { ENTITIES } from '#constants/entities.js';
 
-export class CharacterRepository {
+export class CharactersRepository {
     constructor(persistence) {
         this.entity = ENTITIES.CHARACTERS;
         this.repository = persistence;
@@ -10,4 +10,13 @@ export class CharacterRepository {
         await this.repository.save(this.entity, character);
 
     getAllCharacters = async () => await this.repository.getAll(this.entity);
+
+    getCharacterById = async (id) =>
+        await this.repository.getById(this.entity, id);
+
+    deleteCharacterById = async (id) =>
+        await this.repository.deleteById(this.entity, id);
+
+    updateCharacterById = async (id, character) =>
+        await this.repository.updateById(this.entity, id, character);
 }

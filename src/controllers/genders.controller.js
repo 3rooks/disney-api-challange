@@ -1,6 +1,6 @@
 import { genderService } from '#services/repository.service.js';
 
-class GenderController {
+export class GenderController {
     getGender = async (req, res, next) => {
         try {
             const results = await genderService.getAllGenders();
@@ -18,6 +18,39 @@ class GenderController {
             next(error);
         }
     };
-}
 
-export const genderCtrl = new GenderController();
+    postMovie = async (req, res, next) => {
+        try {
+            const { idGender } = req.params;
+            const { movie } = res.body;
+
+            const gender = await genderService.getGenderById(idGender);
+            if (!gender)
+                return res.status(404).json({ errors: 'gender not found' });
+
+            gender.movies.push({ movie });
+
+            await genderService.updatedGenderById(idGender, gender);
+
+            return res.status(200).json({ results: 'gender updated' });
+        } catch (error) {
+            next(error);
+        }
+    };
+
+    deleteGender = async (req, res, next) => {
+        try {
+            const { idGender } = req.params;
+
+            const gender = await genderService.getGenderById(idGender);
+            if (!gender)
+                return res.status(404).json({ errors: 'gender not found' });
+
+            await genderService.deleteGenderById(idGender);
+
+            return res.status(200).json({ results: 'gender deleted' });
+        } catch (error) {
+            next(error);
+        }
+    };
+}

@@ -1,6 +1,6 @@
 import { ENTITIES } from '#constants/entities.js';
 
-export class UserRepository {
+export class UsersRepository {
     constructor(persistence) {
         this.entity = ENTITIES.USERS;
         this.persistence = persistence;

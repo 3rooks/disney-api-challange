@@ -1,10 +1,18 @@
-import { genderCtrl } from '#controllers/genders.controller.js';
+import { GenderController } from '#controllers/genders.controller.js';
 import { Router } from 'express';
+
+const { getGender, postGender, deleteGender, postMovie } =
+    new GenderController();
 
 const gendersRoute = Router();
 
-gendersRoute.get('/genders', genderCtrl.getGender);
+gendersRoute.get('/genders', getGender);
 
-gendersRoute.post('/genders', genderCtrl.postGender);
+gendersRoute.post('/genders', postGender);
+
+gendersRoute.post('/genders/:idGender', postMovie);
+
+gendersRoute.delete('/genders/:idGender', deleteGender);
 
 export default gendersRoute;
+ 

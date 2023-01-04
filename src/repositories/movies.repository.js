@@ -1,18 +1,22 @@
 import { ENTITIES } from '#constants/entities.js';
 import { ORDERS } from '#constants/order.js';
 
+const proyection = {
+    image: 1,
+    title: 1,
+    createdAt: 1
+};
+
 export class MoviesRepository {
     constructor(persistence) {
         this.entity = ENTITIES.MOVIES;
         this.repository = persistence;
     }
 
+    getMovieById = async (id) => await this.repository.getById(this.entity, id);
+
     getAllMovies = async () =>
-        await this.repository.getAll(this.entity, {
-            image: 1,
-            title: 1,
-            createdAt: 1
-        });
+        await this.repository.getAll(this.entity, proyection);
 
     createMovie = async (movie) =>
         await this.repository.save(this.entity, movie);
@@ -26,22 +30,26 @@ export class MoviesRepository {
             return await this.repository.getAllBy(this.entity, { gender });
         } else if (order && !title && !gender) {
             if (order === Object.keys(ORDERS)[0]) {
-                return await this.repository.getAllSortAsc(this.entity);
+                return await this.repository.getAllSort(this.entity, {
+                    createdAt: ORDERS.ASC
+                });
             } else if (order === Object.keys(ORDERS)[1]) {
-                return this.repository.getAllSortDesc(this.entity);
+                return this.repository.getAllSort(this.entity, {
+                    createdAt: ORDERS.DESC
+                });
             }
         } else if (gender && order && !title) {
             if (order.toUpperCase() === Object.keys(ORDERS)[0]) {
                 return await this.repository.getByGenreAndOrder(
                     this.entity,
                     { gender },
-                    ORDERS.ASC
+                    { title: ORDERS.ASC }
                 );
             } else if (order.toUpperCase() === Object.keys(ORDERS)[1]) {
                 return await this.repository.getByGenreAndOrder(
                     this.entity,
                     { gender },
-                    ORDERS.DESC
+                    { title: ORDERS.DESC }
                 );
             }
         } else {
@@ -55,20 +63,9 @@ export class MoviesRepository {
     getMoviesByGenre = async (genre) =>
         await this.repository.getBy(this.entity, { genre });
 
-    getMoviesByOrder = async (order) => {
-        if (order === 'asc') {
-            const movies = await this.repository.getAll();
-            return movies.sort();
-        }
-    };
+    updateMovieById = async (id, movie) =>
+        await this.repository.updateById(this.entity, id, movie);
 
-    getMoviesByGenreAsc = async (genre, sort) => {
-        const movies = await this.repository.getBy({ genre });
-        if (sort === 'desc') return await movies.sort((a, b) => a - b);
-        return await movies.sort();
-    };
-
-    updeUerBd = async (id, user) => {};
-
-    deletseByI = async (id) => {};
+    deleteMovieById = async (id) =>
+        await this.repository.deleteById(this.entity, id);
 }

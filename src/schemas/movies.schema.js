@@ -29,7 +29,7 @@ const movieSchema = new Schema(
             type: Number,
             require: true
         },
-        gender: [
+        genders: [
             {
                 _id: { _id: false },
                 gender: {

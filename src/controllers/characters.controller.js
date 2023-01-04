@@ -1,10 +1,6 @@
 import { characterService } from '#services/repository.service.js';
 
-class CharacterController {
-    constructor(name) {
-        this.name = name;
-    }
-
+export class CharacterController {
     getCharacter = async (req, res, next) => {
         try {
             const results = await characterService.getAllCharacters();
@@ -22,6 +18,42 @@ class CharacterController {
             next(error);
         }
     };
-}
 
-export const characterCtrl = new CharacterController();
+    postMovie = async (req, res, next) => {
+        try {
+            const { idCharacter } = req.params;
+            const { movie } = req.body;
+
+            const character = await characterService.getCharacterById(
+                idCharacter
+            );
+            if (!character)
+                return res.status(404).json({ errors: 'character not found' });
+
+            character.movies.push({ movie });
+            await characterService.updateCharacterById(idCharacter, character);
+
+            return res.status(200).json({ results: 'character updated' });
+        } catch (error) {
+            next(error);
+        }
+    };
+
+    deleteCharacter = async (req, res, next) => {
+        try {
+            const { idCharacter } = req.params;
+
+            const character = await characterService.getCharacterById(
+                idCharacter
+            );
+            if (!character)
+                return res.status(404).json({ errors: 'character not found' });
+
+            await characterService.deleteCharacterById(idCharacter);
+
+            return res.status(200).json({ results: 'character deleted' });
+        } catch (error) {
+            next(error);
+        }
+    };
+}
