@@ -10,7 +10,7 @@ charactersRoute.get('/characters', getCharacter);
 
 charactersRoute.post('/characters', postCharacter);
 
-charactersRoute.post('/characters/:idCharacter', postMovie);
+charactersRoute.post('/characters/:idCharacter/movie', postMovie);
 
 charactersRoute.delete('/characters/:idCharacter', deleteCharacter);
 

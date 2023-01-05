@@ -1,4 +1,4 @@
-import { genderService } from '#services/repository.service.js';
+import { genderService, movieService } from '#services/repository.service.js';
 
 export class GenderController {
     getGender = async (req, res, next) => {
@@ -22,11 +22,15 @@ export class GenderController {
     postMovie = async (req, res, next) => {
         try {
             const { idGender } = req.params;
-            const { movie } = res.body;
+            const { movie } = req.body;
 
             const gender = await genderService.getGenderById(idGender);
             if (!gender)
                 return res.status(404).json({ errors: 'gender not found' });
+
+            const existMovie = await movieService.getMovieById(movie);
+            if (!existMovie)
+                return res.status(404).json({ results: 'movie not found' });
 
             gender.movies.push({ movie });
 

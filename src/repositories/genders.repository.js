@@ -19,4 +19,7 @@ export class GendersRepository {
 
     updatedGenderById = async (id, gender) =>
         await this.repository.updatedById(this.entity, id, gender);
+
+    createManyGenders = async (data) =>
+        await this.repository.saveMany(this.entity, data);
 }

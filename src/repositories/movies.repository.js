@@ -68,4 +68,7 @@ export class MoviesRepository {
 
     deleteMovieById = async (id) =>
         await this.repository.deleteById(this.entity, id);
+
+    createManyMovies = async (data) =>
+        await this.repository.saveMany(this.entity, data);
 }

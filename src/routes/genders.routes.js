@@ -10,9 +10,8 @@ gendersRoute.get('/genders', getGender);
 
 gendersRoute.post('/genders', postGender);
 
-gendersRoute.post('/genders/:idGender', postMovie);
+gendersRoute.post('/genders/:idGender/movie', postMovie);
 
 gendersRoute.delete('/genders/:idGender', deleteGender);
 
 export default gendersRoute;
- 

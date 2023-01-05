@@ -19,4 +19,7 @@ export class CharactersRepository {
 
     updateCharacterById = async (id, character) =>
         await this.repository.updateById(this.entity, id, character);
+
+    createManyCharacters = async (data) =>
+        await this.repository.saveMany(this.entity, data);
 }

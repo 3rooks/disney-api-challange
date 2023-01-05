@@ -1,20 +1,15 @@
-import {
-    userLoginCtrl,
-    userRegisterCtrl,
-    userUnregisterCtrl
-} from '#controllers/users.controller.js';
-import { userLoginDTO } from '#dtos/users/users-login.dto.js';
-import { userRegisterDTO } from '#dtos/users/users-register.dto.js';
-import { userUnregisterDTO } from '#dtos/users/users-unregister.dto.js';
-
+import { UserController } from '#controllers/users.controller.js';
+import userAuth from '#utils/user-auth.js';
 import { Router } from 'express';
+
+const { postRegister, postLogin, deleteUser } = new UserController();
 
 const usersRoute = Router();
 
-usersRoute.post('/auth/register', userRegisterDTO, userRegisterCtrl);
+usersRoute.post('/auth/register', postRegister);
 
-usersRoute.post('/auth/login', userLoginDTO, userLoginCtrl);
+usersRoute.post('/auth/login', postLogin);
 
-usersRoute.delete('/auth/unregister', userUnregisterDTO, userUnregisterCtrl);
+usersRoute.delete('/auth/unregister', userAuth, deleteUser);
 
 export default usersRoute;

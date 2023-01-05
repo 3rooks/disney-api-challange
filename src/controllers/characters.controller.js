@@ -1,4 +1,7 @@
-import { characterService } from '#services/repository.service.js';
+import {
+    characterService,
+    movieService
+} from '#services/repository.service.js';
 
 export class CharacterController {
     getCharacter = async (req, res, next) => {
@@ -29,6 +32,10 @@ export class CharacterController {
             );
             if (!character)
                 return res.status(404).json({ errors: 'character not found' });
+
+            const existMovie = await movieService.getMovieById(movie);
+            if (!existMovie)
+                return res.status(404).json({ results: 'movie not found' });
 
             character.movies.push({ movie });
             await characterService.updateCharacterById(idCharacter, character);

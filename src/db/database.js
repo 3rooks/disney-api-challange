@@ -28,6 +28,9 @@ export class MongoDataBase {
 
     save = async (entity, data) => await this.models[entity].create(data);
 
+    saveMany = async (entity, data) =>
+        await this.models[entity].insertMany(data);
+
     getBy = async (entity, data) => await this.models[entity].findOne(data);
 
     getAll = async (entity, proyection) =>

@@ -1,4 +1,8 @@
-import { movieService } from '#services/repository.service.js';
+import {
+    characterService,
+    genderService,
+    movieService
+} from '#services/repository.service.js';
 
 export class MovieController {
     getMovies = async (req, res, next) => {
@@ -36,6 +40,10 @@ export class MovieController {
             if (!movie)
                 return res.status(404).json({ errors: 'movie not found' });
 
+            const existGender = await genderService.getGenderById(gender);
+            if (!existGender)
+                return res.status(404).json({ errors: 'gender not found' });
+
             movie.genders.push({ gender });
             await movieService.updateMovieById(idMovie, movie);
 
@@ -53,6 +61,12 @@ export class MovieController {
             const movie = await movieService.getMovieById(idMovie);
             if (!movie)
                 return res.status(404).json({ errors: 'movie not found' });
+
+            const existCharacter = await characterService.getCharacterById(
+                character
+            );
+            if (!existCharacter)
+                return res.status(404).json({ errors: 'character not found' });
 
             movie.characters.push({ character });
             await movieService.updateMovieById(idMovie, movie);
