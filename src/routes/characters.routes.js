@@ -1,16 +1,29 @@
 import { CharacterController } from '#controllers/characters.controller.js';
 import { Router } from 'express';
 
-const { getCharacter, postCharacter, deleteCharacter, postMovie } =
-    new CharacterController();
+const {
+    postMovie,
+    deleteMovie,
+    getCharacter,
+    putCharacter,
+    postCharacter,
+    deleteCharacter,
+    getCharacterById
+} = new CharacterController();
 
 const charactersRoute = Router();
 
 charactersRoute.get('/characters', getCharacter);
 
+charactersRoute.get('/characters/:idCharacter', getCharacterById);
+
 charactersRoute.post('/characters', postCharacter);
 
+charactersRoute.put('/characters/:idCharacter', putCharacter);
+
 charactersRoute.post('/characters/:idCharacter/movie', postMovie);
+
+charactersRoute.delete('/characters/:idCharacter/movie/:idMovie', deleteMovie);
 
 charactersRoute.delete('/characters/:idCharacter', deleteCharacter);
 

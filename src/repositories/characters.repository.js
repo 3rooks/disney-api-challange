@@ -1,5 +1,9 @@
 import { ENTITIES } from '#constants/entities.js';
 
+const projection = {
+    name: 1,
+    image: 1
+};
 export class CharactersRepository {
     constructor(persistence) {
         this.entity = ENTITIES.CHARACTERS;
@@ -9,7 +13,8 @@ export class CharactersRepository {
     createCharacter = async (character) =>
         await this.repository.save(this.entity, character);
 
-    getAllCharacters = async () => await this.repository.getAll(this.entity);
+    getAllCharacters = async () =>
+        await this.repository.getAll(this.entity, projection);
 
     getCharacterById = async (id) =>
         await this.repository.getById(this.entity, id);

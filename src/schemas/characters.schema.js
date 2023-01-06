@@ -44,4 +44,14 @@ const characterSchema = new Schema(
     { timestamps: true, versionKey: false }
 );
 
+characterSchema.pre('find', function () {
+    this.populate('movies.movie');
+});
+characterSchema.pre('findOne', function () {
+    this.populate('movies.movie');
+});
+characterSchema.pre('findById', function () {
+    this.populate('movies.movie');
+});
+
 export const characterModel = model(ENTITIES.CHARACTERS, characterSchema);
