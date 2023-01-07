@@ -39,4 +39,14 @@ const genderSchema = new Schema(
     }
 );
 
+genderSchema.pre('find', function () {
+    this.populate('movies.movie');
+});
+genderSchema.pre('findOne', function () {
+    this.populate('movies.movie');
+});
+genderSchema.pre('findById', function () {
+    this.populate('movies.movie');
+});
+
 export const genderModel = model(ENTITIES.GENDERS, genderSchema);

@@ -29,15 +29,6 @@ const movieSchema = new Schema(
             type: Number,
             require: true
         },
-        genders: [
-            {
-                _id: { _id: false },
-                gender: {
-                    type: Schema.Types.String,
-                    ref: ENTITIES.GENDERS
-                }
-            }
-        ],
         characters: [
             {
                 _id: { _id: false },
@@ -53,5 +44,15 @@ const movieSchema = new Schema(
         versionKey: false
     }
 );
+
+movieSchema.pre('find', function () {
+    this.populate('characters.character');
+});
+movieSchema.pre('findOne', function () {
+    this.populate('characters.character');
+});
+movieSchema.pre('findById', function () {
+    this.populate('characters.character');
+});
 
 export const movieModel = model(ENTITIES.MOVIES, movieSchema);

@@ -1,6 +1,6 @@
+import { ORDERS } from '#constants/order.js';
 import {
     characterService,
-    genderService,
     movieService
 } from '#services/repository.service.js';
 
@@ -9,14 +9,35 @@ export class MovieController {
         try {
             if (Object.keys(req.query).length === 0) {
                 const results = await movieService.getAllMovies();
-                return res.status(200).json(results);
+                return res.status(200).json({ results });
             }
 
-            const results = await movieService.getMoviesByTitleAsc(req.query);
-            if (!results)
-                return res.status(400).json({ errors: 'bad request' });
+            const { title, gender, order } = req.query;
 
-            return res.status(200).json({ results });
+            if (title && !gender && !order) {
+                const results = await movieService.getMovieByTitle(title);
+                !results && res.status(404).json({ errors: 'movie not found' });
+                return res.status(200).json({ results });
+            } else if (gender && !title && !order) {
+                const results = await movieService.getGenderMovies(gender);
+                !results &&
+                    res.status(404).json({ errors: 'gender not found' });
+                return res.status(200).json({ results: results.movies });
+            } else if (order && !title && !gender) {
+                if (order === Object.keys(ORDERS)[0]) {
+                    const results = await movieService.getMoviesSorted({
+                        releaseYear: ORDERS.ASC
+                    });
+                    return res.status(200).json({ results });
+                } else if (order === Object.keys(ORDERS)[1]) {
+                    const results = await movieService.getMoviesSorted({
+                        releaseYear: ORDERS.DESC
+                    });
+                    return res.status(200).json({ results });
+                } else return res.status(400).json({ errors: 'bad request' });
+            } else {
+                return res.status(400).json({ errors: 'bad request' });
+            }
         } catch (error) {
             next(error);
         }
@@ -24,30 +45,8 @@ export class MovieController {
 
     postMovie = async (req, res, next) => {
         try {
-            const results = await movieService.createMovie(req.body);
-            return res.send(201).json({ results });
-        } catch (error) {
-            next(error);
-        }
-    };
-
-    postGender = async (req, res, next) => {
-        try {
-            const { idMovie } = req.params;
-            const { gender } = req.body;
-
-            const movie = await movieService.getMovieById(idMovie);
-            if (!movie)
-                return res.status(404).json({ errors: 'movie not found' });
-
-            const existGender = await genderService.getGenderById(gender);
-            if (!existGender)
-                return res.status(404).json({ errors: 'gender not found' });
-
-            movie.genders.push({ gender });
-            await movieService.updateMovieById(idMovie, movie);
-
-            return res.status(200).json({ results: 'movie updated' });
+            await movieService.createMovie(req.body);
+            return res.status(201).json({ results: 'movie created' });
         } catch (error) {
             next(error);
         }
@@ -83,7 +82,6 @@ export class MovieController {
             const { title, image, rated, releaseYear } = req.body;
 
             const movie = await movieService.getMovieById(idMovie);
-            const { genders, characters } = movie;
 
             if (!movie)
                 return res.status(404).json({ errors: 'movie not found' });
@@ -92,9 +90,7 @@ export class MovieController {
                 title,
                 image,
                 rated,
-                releaseYear,
-                genders,
-                characters
+                releaseYear
             };
 
             await movieService.updateMovieById(idMovie, putMovie);

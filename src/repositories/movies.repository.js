@@ -1,10 +1,11 @@
 import { ENTITIES } from '#constants/entities.js';
-import { ORDERS } from '#constants/order.js';
 
-const proyection = {
-    image: 1,
-    title: 1,
-    createdAt: 1
+const excludeProjection = {
+    characters: 0,
+    rated: 0,
+    genders: 0,
+    updatedAt: 0,
+    createdAt: 0
 };
 
 export class MoviesRepository {
@@ -16,52 +17,24 @@ export class MoviesRepository {
     getMovieById = async (id) => await this.repository.getById(this.entity, id);
 
     getAllMovies = async () =>
-        await this.repository.getAll(this.entity, proyection);
+        await this.repository.getAll(this.entity, excludeProjection);
 
     createMovie = async (movie) =>
         await this.repository.save(this.entity, movie);
 
-    getMoviesByTitleAsc = async (queries) => {
-        const { title, gender, order } = queries;
-
-        if (title && !gender && !order) {
-            return await this.repository.getBy(this.entity, { title });
-        } else if (gender && !title && !order) {
-            return await this.repository.getAllBy(this.entity, { gender });
-        } else if (order && !title && !gender) {
-            if (order === Object.keys(ORDERS)[0]) {
-                return await this.repository.getAllSort(this.entity, {
-                    createdAt: ORDERS.ASC
-                });
-            } else if (order === Object.keys(ORDERS)[1]) {
-                return this.repository.getAllSort(this.entity, {
-                    createdAt: ORDERS.DESC
-                });
-            }
-        } else if (gender && order && !title) {
-            if (order.toUpperCase() === Object.keys(ORDERS)[0]) {
-                return await this.repository.getByGenreAndOrder(
-                    this.entity,
-                    { gender },
-                    { title: ORDERS.ASC }
-                );
-            } else if (order.toUpperCase() === Object.keys(ORDERS)[1]) {
-                return await this.repository.getByGenreAndOrder(
-                    this.entity,
-                    { gender },
-                    { title: ORDERS.DESC }
-                );
-            }
-        } else {
-            return undefined;
-        }
+    getGenderMovies = async (idGender) => {
+        const results = await this.repository.getById(
+            ENTITIES.GENDERS,
+            idGender
+        );
+        return results;
     };
 
-    getMoviesByTitle = async (title) =>
-        await this.repository.getBy(this.entity, { title });
+    getMoviesSorted = async (sortedBy) =>
+        await this.repository.getAllSorted(this.entity, sortedBy);
 
-    getMoviesByGenre = async (genre) =>
-        await this.repository.getBy(this.entity, { genre });
+    getMovieByTitle = async (title) =>
+        await this.repository.getBy(this.entity, { title });
 
     updateMovieById = async (id, movie) =>
         await this.repository.updateById(this.entity, id, movie);

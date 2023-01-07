@@ -6,7 +6,17 @@ import {
 export class CharacterController {
     getCharacter = async (req, res, next) => {
         try {
-            const results = await characterService.getAllCharacters();
+            if (Object.keys(req.query).length === 0) {
+                const results = await characterService.getAllCharacters();
+                return res.status(200).json({ results });
+            }
+
+            const results = await characterService.getCharacterByQuery(
+                req.query
+            );
+            if (!results)
+                return res.status(400).json({ errors: 'bad request' });
+
             return res.status(200).json({ results });
         } catch (error) {
             next(error);

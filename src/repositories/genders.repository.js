@@ -18,7 +18,7 @@ export class GendersRepository {
         await this.repository.deleteById(this.entity, id);
 
     updatedGenderById = async (id, gender) =>
-        await this.repository.updatedById(this.entity, id, gender);
+        await this.repository.updateById(this.entity, id, gender);
 
     createManyGenders = async (data) =>
         await this.repository.saveMany(this.entity, data);
