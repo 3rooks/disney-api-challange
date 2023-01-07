@@ -22,4 +22,7 @@ export class GendersRepository {
 
     createManyGenders = async (data) =>
         await this.repository.saveMany(this.entity, data);
+
+    getGenderBy = async (getBy) =>
+        await this.repository.getBy(this.entity, getBy);
 }

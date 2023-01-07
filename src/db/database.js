@@ -42,12 +42,6 @@ export class MongoDataBase {
     getAllSorted = async (entity, sort) =>
         await this.models[entity].aggregate([{ $sort: sort }]);
 
-    getByGenreAndOrder = async (entity, data, sort) =>
-        await this.models[entity].aggregate([
-            { $match: data },
-            { $sort: sort }
-        ]);
-
     getById = async (entity, id) => await this.models[entity].findById(id);
 
     updateById = async (entity, id, data) =>

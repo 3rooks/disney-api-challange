@@ -28,21 +28,9 @@ export class CharactersRepository {
     createManyCharacters = async (data) =>
         await this.repository.saveMany(this.entity, data);
 
-    getCharacterByQuery = async (queries) => {
-        const { name, age, movie } = queries;
+    getCharacterBy = async (getBy) =>
+        await this.repository.getBy(this.entity, getBy);
 
-        if (name && !age && !movie) {
-            return await this.repository.getBy(this.entity, { name });
-        } else if (age && !name && !movie) {
-            return await this.repository.getAllBy(this.entity, { age });
-        } else if (movie && !name && !age) {
-            const { characters } = await this.repository.getById(
-                ENTITIES.MOVIES,
-                movie
-            );
-            return characters;
-        } else {
-            return undefined;
-        }
-    };
+    getAllCharacterBy = async (getAllBy) =>
+        await this.repository.getAllBy(this.entity, getAllBy);
 }

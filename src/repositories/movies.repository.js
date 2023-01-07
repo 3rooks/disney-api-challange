@@ -22,19 +22,11 @@ export class MoviesRepository {
     createMovie = async (movie) =>
         await this.repository.save(this.entity, movie);
 
-    getGenderMovies = async (idGender) => {
-        const results = await this.repository.getById(
-            ENTITIES.GENDERS,
-            idGender
-        );
-        return results;
-    };
+    getMoviesSorted = async (sortBy) =>
+        await this.repository.getAllSorted(this.entity, sortBy);
 
-    getMoviesSorted = async (sortedBy) =>
-        await this.repository.getAllSorted(this.entity, sortedBy);
-
-    getMovieByTitle = async (title) =>
-        await this.repository.getBy(this.entity, { title });
+    getMovieBy = async (getBy) =>
+        await this.repository.getBy(this.entity, getBy);
 
     updateMovieById = async (id, movie) =>
         await this.repository.updateById(this.entity, id, movie);
