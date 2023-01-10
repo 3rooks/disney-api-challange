@@ -7,19 +7,19 @@ const date = new Date(faker.date.past());
 const getRandom = (min, max) => Math.floor(Math.random() * (max - min) + min);
 
 export const movieFaker = () => ({
-    title: `${faker.name.title()} ${faker.datatype.number()}`.toLocaleLowerCase(),
+    title: `${faker.name.lastName()} movie#${faker.datatype.number()}`.toLowerCase(),
     image: faker.image.cats(),
     rated: faker.datatype.number({ max: 10, min: 1 }),
     releaseYear: getRandom(1950, date.getFullYear())
 });
 
 export const genderFaker = () => ({
-    name: `${faker.music.genre()} ${faker.datatype.number()}`.toLocaleLowerCase(),
+    name: `${faker.music.genre()} gender#${faker.datatype.number()}`.toLowerCase(),
     image: faker.image.cats()
 });
 
 export const characterFaker = () => ({
-    name: `${faker.name.firstName()} ${faker.datatype.number()}`.toLocaleLowerCase(),
+    name: `${faker.name.firstName()} char#${faker.datatype.number()}`.toLowerCase(),
     image: faker.image.cats(),
     age: faker.datatype.number({ max: 100, min: 1 }),
     history: faker.lorem.paragraph()

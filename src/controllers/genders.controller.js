@@ -70,6 +70,28 @@ export class GenderController {
         }
     };
 
+    putGender = async (req, res, next) => {
+        try {
+            const { idGender } = req.params;
+            const { name, image } = req.body;
+
+            const existGender = await genderService.getGenderById(idGender);
+            if (!existGender)
+                return res.status(404).json({ errors: 'gender not found' });
+
+            const gender = {
+                name,
+                image
+            };
+
+            await genderService.updatedGenderById(idGender, gender);
+
+            return res.status(200).json({ results: 'gender updated' });
+        } catch (error) {
+            next(error);
+        }
+    };
+
     deleteMovie = async (req, res, next) => {
         try {
             const { idGender, idMovie } = req.params;

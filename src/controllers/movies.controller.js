@@ -44,6 +44,20 @@ export class MovieController {
         }
     };
 
+    getMovieById = async (req, res, next) => {
+        try {
+            const { idMovie } = req.params;
+
+            const results = await movieService.getMovieById(idMovie);
+            if (!results)
+                return res.status(404).json({ errors: 'movie not found' });
+
+            return res.status(200).json({ results });
+        } catch (error) {
+            next(error);
+        }
+    };
+
     postMovie = async (req, res, next) => {
         try {
             const { title, image, rated, releaseYear } = req.body;

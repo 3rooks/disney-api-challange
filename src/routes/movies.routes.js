@@ -6,6 +6,7 @@ const {
     getMovies,
     postMovie,
     deleteMovie,
+    getMovieById,
     postCharacter,
     deleteCharacter
 } = new MovieController();
@@ -13,6 +14,8 @@ const {
 const moviesRoute = Router();
 
 moviesRoute.get('/movies', getMovies);
+
+moviesRoute.get('/movies/:idMovie', getMovieById);
 
 moviesRoute.post('/movies', postMovie);
 
