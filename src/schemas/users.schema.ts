@@ -1,10 +1,11 @@
-
+import { ENTITIES } from '@constants/entities';
+import { IUser } from '@interfaces/user.interface';
 import mongoose from 'mongoose';
 import uuidv4 from 'uuid-random';
 
 const { Schema, model } = mongoose;
 
-const userSchema = new Schema(
+const userSchema = new Schema<IUser>(
     {
         _id: {
             _id: false,
@@ -32,4 +33,4 @@ const userSchema = new Schema(
     }
 );
 
-export const userModel = model(ENTITIES.USERS, userSchema);
+export const UserModel = model<IUser>(ENTITIES.USERS, userSchema);

@@ -1,52 +1,60 @@
-import { ENTITIES } from '@constants/entities';
-import { characterModel } from '@schemas/characters.schema';
-import { genderModel } from '@schemas/genders.schema';
-import { movieModel } from '@schemas/movies.schema';
-import { userModel } from '@schemas/users.schema';
+import { ICharacter } from '@interfaces/character.interface';
+import { IGender } from '@interfaces/gender.interface';
+import { ModelEntities } from '@interfaces/models.interface';
+import { IMovie } from '@interfaces/movie.interface';
+import { IUser } from '@interfaces/user.interface';
+import { CharacterModel } from '@schemas/characters.schema';
+import { GenderModel } from '@schemas/genders.schema';
+import { MovieModel } from '@schemas/movies.schema';
+import { UserModel } from '@schemas/users.schema';
 import mongoose from 'mongoose';
 
 export class MongoDataBase {
-    constructor(url: String) {
-        this.connection(url: String);
-        this.models = {
-            [ENTITIES.USERS]: userModel,
-            [ENTITIES.MOVIES]: movieModel,
-            [ENTITIES.GENDERS]: genderModel,
-            [ENTITIES.CHARACTERS]: characterModel
-        };
-    }
+    private readonly entities: ModelEntities<
+        IUser,
+        IMovie,
+        IGender,
+        ICharacter
+    > = {
+        Users: UserModel,
+        Movies: MovieModel,
+        Genders: GenderModel,
+        Characters: CharacterModel
+    };
 
-    connection = async (url: String) => {
+    readonly connection = async (url: string): Promise<void> => {
         try {
             const db = await mongoose.connect(url);
-            console.log(`persistence/connected-db: ${db.connection.name}`);
-            return db;
+            console.log(`Successful connection db: ${db.connection.name}`);
         } catch (error) {
-            console.log(`Failed connection to persistence-db: ${error}`);
+            console.log(`Failed connection db: ${error}`);
         }
     };
 
-    save = async (entity, data) => await this.models[entity].create(data);
+    public save = async (entity: string, data: object) =>
+        await this.entities[entity].create(data);
 
-    saveMany = async (entity, data) =>
-        await this.models[entity].insertMany(data);
+    public saveMany = async (entity: string, data: object) =>
+        await this.entities[entity].insertMany(data);
 
-    getBy = async (entity, data) => await this.models[entity].findOne(data);
+    public getBy = async (entity: string, data: object) =>
+        await this.entities[entity].findOne(data);
 
-    getAll = async (entity, proyection) =>
-        await this.models[entity].find({}, proyection);
+    public getAll = async (entity: string, proyection: object | null) =>
+        await this.entities[entity].find({}, proyection);
 
-    getAllBy = async (entity, data) =>
-        await this.models[entity].aggregate([{ $match: data }]);
+    public getAllBy = async (entity: string, data: object) =>
+        await this.entities[entity].aggregate([{ $match: data }]);
 
-    getAllSorted = async (entity, sort) =>
-        await this.models[entity].aggregate([{ $sort: sort }]);
+    public getAllSorted = async (entity: string, sort: any) =>
+        await this.entities[entity].aggregate([{ $sort: sort }]);
 
-    getById = async (entity, id) => await this.models[entity].findById(id);
+    public getById = async (entity: string, id: string) =>
+        await this.entities[entity].findById(id);
 
-    updateById = async (entity, id, data) =>
-        await this.models[entity].findByIdAndUpdate(id, data);
+    public updateById = async (entity: string, id: string, data: object) =>
+        await this.entities[entity].findByIdAndUpdate(id, data);
 
-    deleteById = async (entity, id) =>
-        await this.models[entity].findByIdAndDelete(id);
+    public deleteById = async (entity: string, id: string) =>
+        await this.entities[entity].findByIdAndDelete(id);
 }

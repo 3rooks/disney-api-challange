@@ -1,13 +1,8 @@
-export const ENTITIES = {
+import { IEntities } from '@interfaces/entities.interface';
+
+export const ENTITIES: IEntities = {
     CHARACTERS: 'Characters',
     GENDERS: 'Genders',
     MOVIES: 'Movies',
     USERS: 'Users'
 };
-
-export interface Entities {
-    CHARACTERS: 'Characters';
-    GENDERS: 'Genders';
-    MOVIES: 'Movies';
-    USERS: 'Users';
-}

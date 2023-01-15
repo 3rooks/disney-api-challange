@@ -1,10 +1,11 @@
-import { ENTITIES } from '#constants/entities.js';
+import { ENTITIES } from '@constants/entities';
+import { IMovie } from '@interfaces/movie.interface';
 import mongoose from 'mongoose';
 import uuidv4 from 'uuid-random';
 
 const { Schema, model } = mongoose;
 
-const movieSchema = new Schema(
+const movieSchema = new Schema<IMovie>(
     {
         _id: {
             _id: false,
@@ -22,7 +23,7 @@ const movieSchema = new Schema(
             require: true
         },
         rated: {
-            type: Number,/*  */
+            type: Number,
             require: true
         },
         releaseYear: {
@@ -51,8 +52,5 @@ movieSchema.pre('find', function () {
 movieSchema.pre('findOne', function () {
     this.populate('characters.character');
 });
-movieSchema.pre('findById', function () {
-    this.populate('characters.character');
-});
 
-export const movieModel = model(ENTITIES.MOVIES, movieSchema);
+export const MovieModel = model<IMovie>(ENTITIES.MOVIES, movieSchema);

@@ -1,10 +1,11 @@
-import { ENTITIES } from '#constants/entities.js';
+import { ENTITIES } from '@constants/entities';
+import { IGender } from '@interfaces/gender.interface';
 import mongoose from 'mongoose';
 import uuidv4 from 'uuid-random';
 
 const { Schema, model } = mongoose;
 
-const genderSchema = new Schema(
+const genderSchema = new Schema<IGender>(
     {
         _id: {
             _id: false,
@@ -45,11 +46,5 @@ genderSchema.pre('find', function () {
 genderSchema.pre('findOne', function () {
     this.populate('movies.movie');
 });
-genderSchema.pre('findById', function () {
-    this.populate('movies.movie');
-});
-genderSchema.pre('aggregate', function () {
-    this.populate('movies.movie');
-});
 
-export const genderModel = model(ENTITIES.GENDERS, genderSchema);
+export const GenderModel = model<IGender>(ENTITIES.GENDERS, genderSchema);

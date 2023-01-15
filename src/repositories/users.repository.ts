@@ -1,23 +1,23 @@
-import { ENTITIES } from "@constants/entities";
-
+import { ENTITIES } from '@constants/entities';
+import { MongoDataBase } from '@db/database';
 
 export class UsersRepository {
-    constructor(persistence) {
-        this.entity = ENTITIES.USERS;
-        this.repository = persistence;
-    }
+    readonly entity: string = ENTITIES.USERS;
 
-    getUserById = async (id) => await this.repository.getById(this.entity, id);
+    constructor(private persistence: MongoDataBase) {}
 
-    registerUser = async (user) =>
-        await this.repository.save(this.entity, user);
+    getUserById = async (id: string) =>
+        await this.persistence.getById(this.entity, id);
 
-    getUserBy = async (getBy) =>
-        await this.repository.getBy(this.entity, getBy);
+    registerUser = async (user: object) =>
+        await this.persistence.save(this.entity, user);
 
-    deleteUserById = async (id) =>
-        await this.repository.deleteById(this.entity, id);
+    getUserBy = async (getBy: object) =>
+        await this.persistence.getBy(this.entity, getBy);
 
-    updateUserById = async (id, user) =>
-        await this.repository.updateById(this.entity, id, user);
+    deleteUserById = async (id: string) =>
+        await this.persistence.deleteById(this.entity, id);
+
+    updateUserById = async (id: string, user: object) =>
+        await this.persistence.updateById(this.entity, id, user);
 }

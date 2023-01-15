@@ -1,10 +1,16 @@
-
+import { ORDERS } from '@constants/order';
+import {
+    CharacterService,
+    GenderService,
+    MovieService
+} from '@services/repository.service';
+import { NextFunction, Request, Response } from 'express';
 
 export class MovieController {
-    getMovies = async (req, res, next) => {
+    getMovies = async (req: Request, res: Response, next: NextFunction) => {
         try {
             if (Object.keys(req.query).length === 0) {
-                const results = await movieService.getAllMovies();
+                const results = await MovieService.getAllMovies();
                 return res.status(200).json({ results });
             }
 
@@ -12,131 +18,137 @@ export class MovieController {
 
             // todo
             if (title && !gender && !order) {
-                const results = await movieService.getMovieBy({ title });
+                const results = await MovieService.getMovieBy({ title });
                 if (!results)
                     return res.status(404).json({ errors: 'movie not found' });
                 return res.status(200).json({ results });
             } else if (gender && !title && !order) {
-                const results = await genderService.getGenderById(gender);
+                const results = await GenderService.getGenderById(
+                    gender.toString()
+                );
                 if (!results)
                     return res.status(404).json({ errors: 'gender not found' });
                 return res.status(200).json({ results: results.movies });
             } else if (order && !title && !gender) {
                 if (order === Object.keys(ORDERS)[0]) {
-                    const results = await movieService.getMoviesSorted({
+                    const results = await MovieService.getMoviesSorted({
                         releaseYear: ORDERS.ASC
                     });
                     return res.status(200).json({ results });
                 } else if (order === Object.keys(ORDERS)[1]) {
-                    const results = await movieService.getMoviesSorted({
+                    const results = await MovieService.getMoviesSorted({
                         releaseYear: ORDERS.DESC
                     });
                     return res.status(200).json({ results });
                 } else return res.status(400).json({ errors: 'bad request' });
             } else return res.status(400).json({ errors: 'bad request' });
         } catch (error) {
-            next(error);
+            return next(error);
         }
     };
 
-    getMovieById = async (req, res, next) => {
+    getMovieById = async (req: Request, res: Response, next: NextFunction) => {
         try {
             const { idMovie } = req.params;
 
-            const results = await movieService.getMovieById(idMovie);
+            const results = await MovieService.getMovieById(idMovie);
             if (!results)
                 return res.status(404).json({ errors: 'movie not found' });
 
             return res.status(200).json({ results });
         } catch (error) {
-            next(error);
+            return next(error);
         }
     };
 
-    postMovie = async (req, res, next) => {
+    postMovie = async (req: Request, res: Response, next: NextFunction) => {
         try {
             const { title, image, rated, releaseYear } = req.body;
 
-            const existMovie = await movieService.getMovieBy({ title });
+            const existMovie = await MovieService.getMovieBy({ title });
             if (existMovie)
                 return res.status(409).json({ errors: 'movie conflic' });
 
             const movie = { title, image, rated, releaseYear };
-            await movieService.createMovie(movie);
+            await MovieService.createMovie(movie);
 
             return res.status(201).json({ results: 'movie created' });
         } catch (error) {
-            next(error);
+            return next(error);
         }
     };
 
-    postCharacter = async (req, res, next) => {
+    postCharacter = async (req: Request, res: Response, next: NextFunction) => {
         try {
             const { idMovie } = req.params;
             const { character } = req.body;
 
-            const movie = await movieService.getMovieById(idMovie);
+            const movie = await MovieService.getMovieById(idMovie);
             if (!movie)
                 return res.status(404).json({ errors: 'movie not found' });
 
-            const existCharacter = await characterService.getCharacterById(
+            const existCharacter = await CharacterService.getCharacterById(
                 character
             );
             if (!existCharacter)
                 return res.status(404).json({ errors: 'character not found' });
 
             const existCharacterInMovie = movie.characters.find(
-                (e) => e.character._id === character
+                (e: any) => e.character._id === character
             );
             if (existCharacterInMovie)
                 return res.status(409).json({ errors: 'character conflict' });
 
             movie.characters.push({ character });
-            await movieService.updateMovieById(idMovie, movie);
+            await MovieService.updateMovieById(idMovie, movie);
 
             return res.status(200).json({ results: 'movie updated' });
         } catch (error) {
-            next(error);
+            return next(error);
         }
     };
 
-    deleteCharacter = async (req, res, next) => {
+    deleteCharacter = async (
+        req: Request,
+        res: Response,
+        next: NextFunction
+    ) => {
         try {
             const { idMovie, idCharacter } = req.params;
 
-            const movie = await movieService.getMovieById(idMovie);
+            const movie = await MovieService.getMovieById(idMovie);
             if (!movie)
                 return res.status(404).json({ results: 'movie not found' });
 
             const existCharacter = await movie.characters.find(
-                (e) => e.character._id === idCharacter
+                (e: any) => e.character._id === idCharacter
             );
             if (!existCharacter)
                 return res.status(404).json({ results: 'character not found' });
 
             const characterIndex = movie.characters.findIndex(
-                (e) => e.character._id === idCharacter
+                (e: any) => e.character._id === idCharacter
             );
             movie.characters.splice(characterIndex, 1);
 
-            await movieService.updateMovieById(idMovie, movie);
+            await MovieService.updateMovieById(idMovie, movie);
 
             return res.status(200).json({ results: 'character deleted' });
         } catch (error) {
-            next(error);
+            return next(error);
         }
     };
 
-    putMovie = async (req, res, next) => {
+    putMovie = async (req: Request, res: Response, next: NextFunction) => {
         try {
             const { idMovie } = req.params;
             const { title, image, rated, releaseYear } = req.body;
 
-            const existMovie = await movieService.getMovieById(idMovie);
+            const existMovie = await MovieService.getMovieById(idMovie);
             if (!existMovie)
                 return res.status(404).json({ errors: 'movie not found' });
 
-            const existMovieTitle = await movieService.getMovieBy({ title });
+            const existMovieTitle = await MovieService.getMovieBy({ title });
             if (existMovieTitle)
                 return res.status(409).json({ errors: 'movie conflic' });
 
@@ -146,27 +158,27 @@ export class MovieController {
                 rated,
                 releaseYear
             };
-            await movieService.updateMovieById(idMovie, movie);
+            await MovieService.updateMovieById(idMovie, movie);
 
             return res.status(200).json({ results: 'movie updated' });
         } catch (error) {
-            next(error);
+            return next(error);
         }
     };
 
-    deleteMovie = async (req, res, next) => {
+    deleteMovie = async (req: Request, res: Response, next: NextFunction) => {
         try {
             const { idMovie } = req.params;
 
-            const movie = await movieService.getMovieById(idMovie);
+            const movie = await MovieService.getMovieById(idMovie);
             if (!movie)
                 return res.status(404).json({ errors: 'movie not found' });
 
-            await movieService.deleteMovieById(idMovie);
+            await MovieService.deleteMovieById(idMovie);
 
             return res.status(200).json({ results: 'movie deleted' });
         } catch (error) {
-            next(error);
+            return next(error);
         }
     };
 }

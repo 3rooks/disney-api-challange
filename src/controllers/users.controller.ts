@@ -1,9 +1,15 @@
+import { compareHash, createHash } from '@lib/bcrypt';
+import { signAsync } from '@lib/jwt';
+import { UserService } from '@services/repository.service';
+import { ReqAuth } from '@utils/user-auth';
+import { NextFunction, Request, Response } from 'express';
+
 export class UserController {
-    postRegister = async (req, res, next) => {
+    postRegister = async (req: Request, res: Response, next: NextFunction) => {
         try {
             const { username, email, password } = req.body;
 
-            const existUser = await userService.getUserBy({ email });
+            const existUser = await UserService.getUserBy({ email });
             if (existUser)
                 return res.status(409).json({ errors: 'user conflict' });
 
@@ -11,19 +17,19 @@ export class UserController {
 
             const user = { username, email, password: passwordHashed };
 
-            await userService.registerUser(user);
+            await UserService.registerUser(user);
 
             return res.status(201).json({ results: 'user created' });
         } catch (error) {
-            next(error);
+            return next(error);
         }
     };
 
-    postLogin = async (req, res, next) => {
+    postLogin = async (req: Request, res: Response, next: NextFunction) => {
         try {
             const { email, password } = req.body;
 
-            const user = await userService.getUserBy(email);
+            const user = await UserService.getUserBy(email);
             if (!user)
                 return res.status(401).json({ errors: 'user unauthorized' });
 
@@ -31,93 +37,106 @@ export class UserController {
             if (!equalPassword)
                 return res.status(401).json({ errors: 'user unauthorized' });
 
-            const payload = { id: user._id };
-            const token = await signAsync(payload);
+            // const payload = { id: user._id };
+
+            const token = signAsync(user._id);
 
             return res.status(200).json({ token });
         } catch (error) {
-            next(error);
+            return next(error);
         }
     };
 
-    patchUsername = async (req, res, next) => {
-        try {
-            const { id } = req;
-            const { username } = req.body;
+    patchUsername = async () => {
+        return async (req: ReqAuth, res: Response, next: NextFunction) => {
+            try {
+                const { id } = req;
+                const { username } = req.body;
 
-            const user = await userService.getUserById(id);
-            if (!user)
-                return res.status(404).json({ errors: 'user not found' });
+                const user = await UserService.getUserById(id);
+                if (!user)
+                    return res.status(404).json({ errors: 'user not found' });
 
-            user.username = username;
+                user.username = username;
 
-            await userService.updateUserById(id, user);
+                await UserService.updateUserById(id, user);
 
-            return res.status(200).json({ results: 'user updated' });
-        } catch (error) {
-            next(error);
-        }
+                return res.status(200).json({ results: 'user updated' });
+            } catch (error) {
+                return next(error);
+            }
+        };
     };
 
-    patchEmail = async (req, res, next) => {
-        try {
-            const { id } = req;
-            const { email } = req.body;
+    patchEmail = async () => {
+        return async (req: ReqAuth, res: Response, next: NextFunction) => {
+            try {
+                const { id } = req;
+                const { email } = req.body;
 
-            const user = await userService.getUserById(id);
-            if (!user)
-                return res.status(404).json({ errors: 'user not found' });
+                const user = await UserService.getUserById(id);
+                if (!user)
+                    return res.status(404).json({ errors: 'user not found' });
 
-            user.email = email;
+                user.email = email;
 
-            await userService.updateUserById(id, user);
+                await UserService.updateUserById(id, user);
 
-            return res.status(200).json({ results: 'user updated' });
-        } catch (error) {
-            next(error);
-        }
+                return res.status(200).json({ results: 'user updated' });
+            } catch (error) {
+                return next(error);
+            }
+        };
     };
 
-    patchPassword = async (req, res, next) => {
-        try {
-            const { id } = req;
-            const { oldPassword, newPassword } = req.body;
+    patchPassword = async () => {
+        return async (req: ReqAuth, res: Response, next: NextFunction) => {
+            try {
+                const { id } = req;
+                const { oldPassword, newPassword } = req.body;
 
-            const user = await userService.getUserById(id);
-            if (!user)
-                return res.status(404).json({ errors: 'user not found' });
+                const user = await UserService.getUserById(id);
+                if (!user)
+                    return res.status(404).json({ errors: 'user not found' });
 
-            const checkPassword = await compareHash(oldPassword, user);
-            if (!checkPassword)
-                return res.status(401).json({ errors: 'unauthorized' });
+                const checkPassword = await compareHash(oldPassword, user);
+                if (!checkPassword)
+                    return res.status(401).json({ errors: 'unauthorized' });
 
-            user.password = await createHash(newPassword);
-            await userService.updateUserById(id, user);
+                user.password = await createHash(newPassword);
+                await UserService.updateUserById(id, user);
 
-            return res.status(200).json({ results: 'user updated' });
-        } catch (error) {
-            next(error);
-        }
+                return res.status(200).json({ results: 'user updated' });
+            } catch (error) {
+                return next(error);
+            }
+        };
     };
 
-    deleteUser = async (req, res, next) => {
-        try {
-            const { id } = req;
-            const { password } = req.body;
+    deleteUser = async () => {
+        return async (req: ReqAuth, res: Response, next: NextFunction) => {
+            try {
+                const { id } = req;
+                const { password } = req.body;
 
-            const existUser = await userService.getUserBy(email);
-            if (!existUser)
-                return res.status(401).json({ errors: 'user unauthorized' });
+                const existUser = await UserService.getUserById(id);
+                if (!existUser)
+                    return res
+                        .status(401)
+                        .json({ errors: 'user unauthorized' });
 
-            const equalPassword = await compareHash(password, existUser);
-            if (!equalPassword)
-                return res.status(401).json({ errors: 'user unauthorized' });
+                const equalPassword = await compareHash(password, existUser);
+                if (!equalPassword)
+                    return res
+                        .status(401)
+                        .json({ errors: 'user unauthorized' });
 
-            await userService.deleteUserById(id);
+                await UserService.deleteUserById(id);
 
-            return res.status(200).json({ results: 'user deleted' });
-        } catch (error) {
-            next(error);
-        }
+                return res.status(200).json({ results: 'user deleted' });
+            } catch (error) {
+                return next(error);
+            }
+        };
     };
 }

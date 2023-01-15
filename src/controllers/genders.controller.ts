@@ -1,80 +1,82 @@
+import { GenderService, MovieService } from '@services/repository.service';
+import { NextFunction, Request, Response } from 'express';
 
 export class GenderController {
-    getGender = async (req, res, next) => {
+    getGender = async (_: Request, res: Response, next: NextFunction) => {
         try {
-            const results = await genderService.getAllGenders();
+            const results = await GenderService.getAllGenders();
             res.status(200).json({ results });
         } catch (error) {
-            next(error);
+            return next(error);
         }
     };
 
-    getGenderById = async (req, res, next) => {
+    getGenderById = async (req: Request, res: Response, next: NextFunction) => {
         try {
             const { idGender } = req.params;
 
-            const results = await genderService.getGenderById(idGender);
+            const results = await GenderService.getGenderById(idGender);
             if (!results)
                 return res.status(404).json({ errors: 'gender not found' });
 
             return res.status(200).json({ results });
         } catch (error) {
-            next(error);
+            return next(error);
         }
     };
 
-    postGender = async (req, res, next) => {
+    postGender = async (req: Request, res: Response, next: NextFunction) => {
         try {
             const { name, image } = req.body;
 
-            const existGender = await genderService.getGenderBy({ name });
+            const existGender = await GenderService.getGenderBy({ name });
             if (existGender)
                 return res.status(409).json({ errors: 'gender conflict' });
 
             const gender = { name, image };
-            await genderService.createGender(gender);
+            await GenderService.createGender(gender);
 
             return res.status(201).json({ results: 'gender created' });
         } catch (error) {
-            next(error);
+            return next(error);
         }
     };
 
-    postMovie = async (req, res, next) => {
+    postMovie = async (req: Request, res: Response, next: NextFunction) => {
         try {
             const { idGender } = req.params;
             const { movie } = req.body;
 
-            const gender = await genderService.getGenderById(idGender);
+            const gender = await GenderService.getGenderById(idGender);
             if (!gender)
                 return res.status(404).json({ errors: 'gender not found' });
 
-            const existMovie = await movieService.getMovieById(movie);
+            const existMovie = await MovieService.getMovieById(movie);
             if (!existMovie)
                 return res.status(404).json({ results: 'movie not found' });
 
             const existMovieInGender = gender.movies.find(
-                (e) => e.movie._id === movie
+                (e: any) => e.movie._id === movie
             );
             if (existMovieInGender)
                 return res.status(409).json({ errors: 'movie conflict' });
 
             gender.movies.push({ movie });
 
-            await genderService.updatedGenderById(idGender, gender);
+            await GenderService.updatedGenderById(idGender, gender);
 
             return res.status(200).json({ results: 'gender updated' });
         } catch (error) {
-            next(error);
+            return next(error);
         }
     };
 
-    putGender = async (req, res, next) => {
+    putGender = async (req: Request, res: Response, next: NextFunction) => {
         try {
             const { idGender } = req.params;
             const { name, image } = req.body;
 
-            const existGender = await genderService.getGenderById(idGender);
+            const existGender = await GenderService.getGenderById(idGender);
             if (!existGender)
                 return res.status(404).json({ errors: 'gender not found' });
 
@@ -83,52 +85,54 @@ export class GenderController {
                 image
             };
 
-            await genderService.updatedGenderById(idGender, gender);
+            await GenderService.updatedGenderById(idGender, gender);
 
             return res.status(200).json({ results: 'gender updated' });
         } catch (error) {
-            next(error);
+            return next(error);
         }
     };
 
-    deleteMovie = async (req, res, next) => {
+    deleteMovie = async (req: Request, res: Response, next: NextFunction) => {
         try {
             const { idGender, idMovie } = req.params;
 
-            const gender = await genderService.getGenderById(idGender);
+            const gender = await GenderService.getGenderById(idGender);
             if (!gender)
                 return res.status(404).json({ errors: 'gender not found' });
 
-            const movie = gender.movies.find((e) => e.movie._id === idMovie);
+            const movie = gender.movies.find(
+                (e: any) => e.movie._id === idMovie
+            );
             if (!movie)
                 return res.status(404).json({ errors: 'movie not found' });
 
             const movieIndex = gender.movies.findIndex(
-                (e) => e.movie._id === idMovie
+                (e: any) => e.movie._id === idMovie
             );
             gender.movies.splice(movieIndex, 1);
 
-            await genderService.updatedGenderById(idGender, gender);
+            await GenderService.updatedGenderById(idGender, gender);
 
             return res.status(200).json({ results: 'movie deleted' });
         } catch (error) {
-            next(error);
+            return next(error);
         }
     };
 
-    deleteGender = async (req, res, next) => {
+    deleteGender = async (req: Request, res: Response, next: NextFunction) => {
         try {
             const { idGender } = req.params;
 
-            const gender = await genderService.getGenderById(idGender);
+            const gender = await GenderService.getGenderById(idGender);
             if (!gender)
                 return res.status(404).json({ errors: 'gender not found' });
 
-            await genderService.deleteGenderById(idGender);
+            await GenderService.deleteGenderById(idGender);
 
             return res.status(200).json({ results: 'gender deleted' });
         } catch (error) {
-            next(error);
+            return next(error);
         }
     };
 }

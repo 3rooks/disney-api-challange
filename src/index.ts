@@ -1,11 +1,12 @@
 import '@config/env';
 import httpServer from '@config/http';
+import { PORT, URI } from '@constants/enviroment';
+import MongoService from '@services/repository.service';
 
-const PORT: number = Number(process.env.PORT) || 8080;
-
-const bootstrap = () => {
+const bootstrap = async () => {
+    await MongoService.connection(URI);
     httpServer.listen(PORT, () => {
-        console.log(`listening on port: ${PORT}`);
+        console.log(`Listening on port: ${PORT}`);
     });
 };
 

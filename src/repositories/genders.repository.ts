@@ -1,29 +1,29 @@
-import { ENTITIES } from "@constants/entities";
-
+import { ENTITIES } from '@constants/entities';
+import { MongoDataBase } from '@db/database';
 
 export class GendersRepository {
-    constructor(persistence) {
-        this.entity = ENTITIES.GENDERS;
-        this.repository = persistence;
-    }
+    readonly entity: string = ENTITIES.GENDERS;
 
-    getGenderById = async (id) =>
-        await this.repository.getById(this.entity, id);
+    constructor(private persistence: MongoDataBase) {}
 
-    getAllGenders = async () => await this.repository.getAll(this.entity);
+    getGenderById = async (id: string) =>
+        await this.persistence.getById(this.entity, id);
 
-    createGender = async (gender) =>
-        await this.repository.save(this.entity, gender);
+    getAllGenders = async () =>
+        await this.persistence.getAll(this.entity, null);
 
-    deleteGenderById = async (id) =>
-        await this.repository.deleteById(this.entity, id);
+    createGender = async (gender: object) =>
+        await this.persistence.save(this.entity, gender);
 
-    updatedGenderById = async (id, gender) =>
-        await this.repository.updateById(this.entity, id, gender);
+    deleteGenderById = async (id: string) =>
+        await this.persistence.deleteById(this.entity, id);
 
-    createManyGenders = async (data) =>
-        await this.repository.saveMany(this.entity, data);
+    updatedGenderById = async (id: string, gender: object) =>
+        await this.persistence.updateById(this.entity, id, gender);
 
-    getGenderBy = async (getBy) =>
-        await this.repository.getBy(this.entity, getBy);
+    createManyGenders = async (data: object) =>
+        await this.persistence.saveMany(this.entity, data);
+
+    getGenderBy = async (getBy: object) =>
+        await this.persistence.getBy(this.entity, getBy);
 }

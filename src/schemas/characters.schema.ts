@@ -1,10 +1,11 @@
-import { ENTITIES } from '#constants/entities.js';
+import { ENTITIES } from '@constants/entities';
+import { ICharacter } from '@interfaces/character.interface';
 import mongoose from 'mongoose';
 import uuidv4 from 'uuid-random';
 
 const { Schema, model } = mongoose;
 
-const characterSchema = new Schema(
+const characterSchema = new Schema<ICharacter>(
     {
         _id: {
             _id: false,
@@ -44,4 +45,7 @@ const characterSchema = new Schema(
     { timestamps: true, versionKey: false }
 );
 
-export const characterModel = model(ENTITIES.CHARACTERS, characterSchema);
+export const CharacterModel = model<ICharacter>(
+    ENTITIES.CHARACTERS,
+    characterSchema
+);

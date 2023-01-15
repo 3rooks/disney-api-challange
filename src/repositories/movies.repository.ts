@@ -1,5 +1,5 @@
-import { ENTITIES } from "@constants/entities";
-
+import { ENTITIES } from '@constants/entities';
+import { MongoDataBase } from '@db/database';
 
 const excludeProjection = {
     characters: 0,
@@ -10,31 +10,31 @@ const excludeProjection = {
 };
 
 export class MoviesRepository {
-    constructor(persistence) {
-        this.entity = ENTITIES.MOVIES;
-        this.repository = persistence;
-    }
+    readonly entity: string = ENTITIES.MOVIES;
 
-    getMovieById = async (id) => await this.repository.getById(this.entity, id);
+    constructor(private persistence: MongoDataBase) {}
+
+    getMovieById = async (id: string) =>
+        await this.persistence.getById(this.entity, id);
 
     getAllMovies = async () =>
-        await this.repository.getAll(this.entity, excludeProjection);
+        await this.persistence.getAll(this.entity, excludeProjection);
 
-    createMovie = async (movie) =>
-        await this.repository.save(this.entity, movie);
+    createMovie = async (movie: object) =>
+        await this.persistence.save(this.entity, movie);
 
-    getMoviesSorted = async (sortBy) =>
-        await this.repository.getAllSorted(this.entity, sortBy);
+    getMoviesSorted = async (sortBy: object) =>
+        await this.persistence.getAllSorted(this.entity, sortBy);
 
-    getMovieBy = async (getBy) =>
-        await this.repository.getBy(this.entity, getBy);
+    getMovieBy = async (getBy: object) =>
+        await this.persistence.getBy(this.entity, getBy);
 
-    updateMovieById = async (id, movie) =>
-        await this.repository.updateById(this.entity, id, movie);
+    updateMovieById = async (id: string, movie: object) =>
+        await this.persistence.updateById(this.entity, id, movie);
 
-    deleteMovieById = async (id) =>
-        await this.repository.deleteById(this.entity, id);
+    deleteMovieById = async (id: string) =>
+        await this.persistence.deleteById(this.entity, id);
 
-    createManyMovies = async (data) =>
-        await this.repository.saveMany(this.entity, data);
+    createManyMovies = async (data: object) =>
+        await this.persistence.saveMany(this.entity, data);
 }

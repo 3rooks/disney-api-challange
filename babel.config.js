@@ -20,6 +20,7 @@ module.exports = {
                     '@controllers': './src/controllers',
                     '@db': './src/db',
                     '@dtos': './src/dtos',
+                    '@interfaces': './src/interfaces',
                     '@lib': './src/lib',
                     '@repositories': './src/repositories',
                     '@routes': './src/routes',
