@@ -1,9 +1,3 @@
-// import { resolve } from 'path';
-// // import { fileURLToPath } from 'url';
+import { resolve } from 'path';
 
-// // const __dirname = dirname(fileURLToPath(import.meta.url));
-
-// export const PUBLIC_PATH = resolve(__dirname, '../public');
-// export const GENDER_PATH = resolve(__dirname, '../public/genders.example.json');
-
-// console.log(PUBLIC_PATH, GENDER_PATH);
+export const PUBLIC_PATH: string = resolve(__dirname, '../public');

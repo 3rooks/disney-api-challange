@@ -1,16 +1,17 @@
 import { ENTITIES } from '@constants/entities';
 import { MongoDataBase } from '@db/database';
+import { ICharacter } from '@interfaces/character.interface';
 
 const projection = {
     name: 1,
     image: 1
 };
 export class CharactersRepository {
-    readonly entity: string = ENTITIES.CHARACTERS;
+    readonly entity = ENTITIES.CHARACTERS;
 
     constructor(private persistence: MongoDataBase) {}
 
-    createCharacter = async (character: object) =>
+    createCharacter = async (character: ICharacter) =>
         await this.persistence.save(this.entity, character);
 
     getAllCharacters = async () =>
@@ -22,10 +23,10 @@ export class CharactersRepository {
     deleteCharacterById = async (id: string) =>
         await this.persistence.deleteById(this.entity, id);
 
-    updateCharacterById = async (id: string, character: object) =>
+    updateCharacterById = async (id: string, character: ICharacter) =>
         await this.persistence.updateById(this.entity, id, character);
 
-    createManyCharacters = async (data: object) =>
+    createManyCharacters = async (data: ICharacter[]) =>
         await this.persistence.saveMany(this.entity, data);
 
     getCharacterBy = async (getBy: object) =>

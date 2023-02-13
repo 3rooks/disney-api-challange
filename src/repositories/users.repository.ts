@@ -1,15 +1,16 @@
 import { ENTITIES } from '@constants/entities';
 import { MongoDataBase } from '@db/database';
+import { IUser } from '@interfaces/user.interface';
 
 export class UsersRepository {
-    readonly entity: string = ENTITIES.USERS;
+    readonly entity = ENTITIES.USERS;
 
     constructor(private persistence: MongoDataBase) {}
 
     getUserById = async (id: string) =>
         await this.persistence.getById(this.entity, id);
 
-    registerUser = async (user: object) =>
+    registerUser = async (user: IUser) =>
         await this.persistence.save(this.entity, user);
 
     getUserBy = async (getBy: object) =>

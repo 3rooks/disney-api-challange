@@ -157,16 +157,21 @@ export class CharacterController {
             if (!existMovie)
                 return res.status(404).json({ results: 'movie not found' });
 
-            const existMovieInCharacter = character.movies.find(
-                (e: any) => e.movie === movie
-            );
-            if (existMovieInCharacter)
-                return res.status(409).json({ errors: 'movie conflict' });
+            if (character.movies) {
+                const existMovieInCharacter = character.movies.find(
+                    (e: any) => e.movie === movie
+                );
+                if (existMovieInCharacter)
+                    return res.status(409).json({ errors: 'movie conflict' });
 
-            character.movies.push({ movie });
-            await CharacterService.updateCharacterById(idCharacter, character);
+                character.movies.push({ movie });
+                await CharacterService.updateCharacterById(
+                    idCharacter,
+                    character
+                );
 
-            return res.status(200).json({ results: 'character updated' });
+                return res.status(200).json({ results: 'character updated' });
+            }
         } catch (error) {
             return next(error);
         }
@@ -182,20 +187,25 @@ export class CharacterController {
             if (!character)
                 return res.status(404).json({ results: 'character not found' });
 
-            const existMovie = await character.movies.find(
-                (e: any) => e.movie === idMovie
-            );
-            if (!existMovie)
-                return res.status(404).json({ results: 'movie not found' });
+            if (character.movies) {
+                const existMovie = await character.movies.find(
+                    (e: any) => e.movie === idMovie
+                );
+                if (!existMovie)
+                    return res.status(404).json({ results: 'movie not found' });
 
-            const movieIndex = await character.movies.findIndex(
-                (e: any) => e.movie === idMovie
-            );
-            character.movies.splice(movieIndex, 1);
+                const movieIndex = await character.movies.findIndex(
+                    (e: any) => e.movie === idMovie
+                );
+                character.movies.splice(movieIndex, 1);
 
-            await CharacterService.updateCharacterById(idCharacter, character);
+                await CharacterService.updateCharacterById(
+                    idCharacter,
+                    character
+                );
 
-            return res.status(200).json({ results: 'movie deleted' });
+                return res.status(200).json({ results: 'movie deleted' });
+            }
         } catch (error) {
             return next(error);
         }

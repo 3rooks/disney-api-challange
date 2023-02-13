@@ -22,7 +22,7 @@ export class MongoDataBase {
         Characters: CharacterModel
     };
 
-    readonly connection = async (url: string): Promise<void> => {
+    readonly connection = async (url: string) => {
         try {
             const db = await mongoose.connect(url);
             console.log(`Successful connection db: ${db.connection.name}`);
@@ -40,11 +40,11 @@ export class MongoDataBase {
     public getBy = async (entity: string, data: object) =>
         await this.entities[entity].findOne(data);
 
-    public getAll = async (entity: string, proyection: object | null) =>
-        await this.entities[entity].find({}, proyection);
+    public getAll = async (entity: string, projection: object | undefined) =>
+        await this.entities[entity].find({}, projection).exec();
 
     public getAllBy = async (entity: string, data: object) =>
-        await this.entities[entity].aggregate([{ $match: data }]);
+        await this.entities[entity].aggregate([{ $match: data }]).exec();
 
     public getAllSorted = async (entity: string, sort: any) =>
         await this.entities[entity].aggregate([{ $sort: sort }]);
