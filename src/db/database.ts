@@ -41,10 +41,10 @@ export class MongoDataBase {
         await this.entities[entity].findOne(data);
 
     public getAll = async (entity: string, projection: object | undefined) =>
-        await this.entities[entity].find({}, projection).exec();
+        await this.entities[entity].find({}, projection);
 
     public getAllBy = async (entity: string, data: object) =>
-        await this.entities[entity].aggregate([{ $match: data }]).exec();
+        await this.entities[entity].aggregate([{ $match: data }]);
 
     public getAllSorted = async (entity: string, sort: any) =>
         await this.entities[entity].aggregate([{ $sort: sort }]);

@@ -12,35 +12,35 @@ export class CharactersRepository {
 
     constructor(private persistence: MongoDataBase) {}
 
-    createCharacter = async (
+    public createCharacter = async (
         character: ICharacter
     ): Promise<ICharacter | null> =>
         await this.persistence.save(this.entity, character);
 
-    getAllCharacters = async (): Promise<ICharacter[] | null> =>
+    public getAllCharacters = async (): Promise<ICharacter[] | null> =>
         await this.persistence.getAll(this.entity, projection);
 
-    getCharacterById = async (id: ID): Promise<ICharacter | null> =>
+    public getCharacterById = async (id: ID): Promise<ICharacter | null> =>
         await this.persistence.getById(this.entity, id);
 
-    deleteCharacterById = async (id: ID): Promise<ICharacter | null> =>
+    public deleteCharacterById = async (id: ID): Promise<ICharacter | null> =>
         await this.persistence.deleteById(this.entity, id);
 
-    updateCharacterById = async (
+    public updateCharacterById = async (
         id: ID,
         character: ICharacter
     ): Promise<ICharacter | null> =>
         await this.persistence.updateById(this.entity, id, character);
 
-    createManyCharacters = async (
+    public createManyCharacters = async (
         data: ICharacter[]
     ): Promise<ICharacter[] | null> =>
         await this.persistence.saveMany(this.entity, data);
 
-    getCharacterBy = async (getBy: object): Promise<ICharacter | null> =>
+    public getCharacterBy = async (getBy: object): Promise<ICharacter | null> =>
         await this.persistence.getBy(this.entity, getBy);
 
-    getAllCharacterBy = async (
+    public getAllCharacterBy = async (
         getAllBy: object
     ): Promise<ICharacter[] | null> =>
         await this.persistence.getAllBy(this.entity, getAllBy);

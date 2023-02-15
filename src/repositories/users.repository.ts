@@ -8,19 +8,22 @@ export class UsersRepository {
 
     constructor(private persistence: MongoDataBase) {}
 
-    getUserById = async (id: ID): Promise<IUser | null> =>
+    public getUserById = async (id: ID): Promise<IUser | null> =>
         await this.persistence.getById(this.entity, id);
 
-    registerUser = async (user: IUser): Promise<IUser | null> =>
+    public registerUser = async (user: IUser): Promise<IUser | null> =>
         await this.persistence.save(this.entity, user);
 
-    getUserBy = async (getBy: GetUserByEmail): Promise<IUser | null> =>
+    public getUserBy = async (getBy: GetUserByEmail): Promise<IUser | null> =>
         await this.persistence.getBy(this.entity, getBy);
 
-    deleteUserById = async (id: ID): Promise<IUser | null> =>
+    public deleteUserById = async (id: ID): Promise<IUser | null> =>
         await this.persistence.deleteById(this.entity, id);
 
-    updateUserById = async (id: ID, user: IUser): Promise<IUser | null> =>
+    public updateUserById = async (
+        id: ID,
+        user: IUser
+    ): Promise<IUser | null> =>
         await this.persistence.updateById(this.entity, id, user);
 }
 
