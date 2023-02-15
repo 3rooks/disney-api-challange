@@ -1,5 +1,6 @@
 import { ENTITIES } from '@constants/entities';
 import { MongoDataBase } from '@db/database';
+import { ID } from '@interfaces/id.type';
 import { IMovie } from '@interfaces/movie.interface';
 
 const excludeProjection = {
@@ -15,27 +16,27 @@ export class MoviesRepository {
 
     constructor(private persistence: MongoDataBase) {}
 
-    getMovieById = async (id: string): Promise<IMovie | null> =>
+    getMovieById = async (id: ID): Promise<IMovie | null> =>
         await this.persistence.getById(this.entity, id);
 
     getAllMovies = async (): Promise<IMovie[] | null> =>
         await this.persistence.getAll(this.entity, excludeProjection);
 
-    createMovie = async (movie: IMovie) =>
+    createMovie = async (movie: IMovie): Promise<IMovie | null> =>
         await this.persistence.save(this.entity, movie);
 
-    getMoviesSorted = async (sortBy: object) =>
+    getMoviesSorted = async (sortBy: object): Promise<IMovie[] | null> =>
         await this.persistence.getAllSorted(this.entity, sortBy);
 
-    getMovieBy = async (getBy: object) =>
+    getMovieBy = async (getBy: object): Promise<IMovie | null> =>
         await this.persistence.getBy(this.entity, getBy);
 
-    updateMovieById = async (id: string, movie: IMovie) =>
+    updateMovieById = async (id: ID, movie: IMovie): Promise<IMovie | null> =>
         await this.persistence.updateById(this.entity, id, movie);
 
-    deleteMovieById = async (id: string) =>
+    deleteMovieById = async (id: ID): Promise<IMovie | null> =>
         await this.persistence.deleteById(this.entity, id);
 
-    createManyMovies = async (data: IMovie[]) =>
+    createManyMovies = async (data: IMovie[]): Promise<IMovie[] | null> =>
         await this.persistence.saveMany(this.entity, data);
 }

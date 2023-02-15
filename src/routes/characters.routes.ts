@@ -1,4 +1,3 @@
-
 import { CharacterController } from '@controllers/characters.controller';
 import { Router } from 'express';
 

@@ -2,20 +2,10 @@ import { UserController } from '@controllers/users.controller';
 import userAuth from '@utils/user-auth';
 import { Router } from 'express';
 
-const {
-    postLogin,
-    deleteUser,
-    patchEmail,
-    postRegister,
-    patchUsername,
-    patchPassword
-} = new UserController();
+const { deleteUser, patchEmail, patchUsername, patchPassword } =
+    new UserController();
 
 const usersRoute = Router();
-
-usersRoute.post('/auth/register', postRegister);
-
-usersRoute.post('/auth/login', postLogin);
 
 usersRoute.patch('/auth/username', userAuth, patchUsername);
 

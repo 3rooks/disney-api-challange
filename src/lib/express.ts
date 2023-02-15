@@ -1,3 +1,4 @@
+import authRoute from '@routes/auth.routes';
 import charactersRoute from '@routes/characters.routes';
 import gendersRoute from '@routes/genders.routes';
 import moviesRoute from '@routes/movies.routes';
@@ -12,6 +13,7 @@ application.use(express.json());
 application.use(express.urlencoded({ extended: true }));
 application.use(express.static(PUBLIC_PATH));
 
+application.use('/api/v1', authRoute);
 application.use('/api/v1', usersRoute);
 application.use('/api/v1', moviesRoute);
 application.use('/api/v1', gendersRoute);
