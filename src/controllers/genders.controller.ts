@@ -30,8 +30,10 @@ const getGenderById = async (req: Request, res: Response) => {
 
     const results = await GenderService.getGenderById(idGender);
     if (!results) return res.status(404).json({ errors: 'gender not found' });
-
-    return res.status(200).json({ results });
+    /**
+     * retorna las peliculas de un genero
+     */
+    return res.status(200).json({ results: results.movies });
 };
 
 const postGender = async (req: Request, res: Response) => {

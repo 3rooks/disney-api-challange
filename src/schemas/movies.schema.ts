@@ -46,9 +46,9 @@ const movieSchema = new Schema<IMovie>(
     }
 );
 
-movieSchema.pre('find', function () {
-    this.populate('characters.character');
-});
+// movieSchema.pre('find', function () {
+//     this.populate('characters.character');
+// });
 movieSchema.pre('findOne', function () {
     this.populate('characters.character');
 });

@@ -3,9 +3,13 @@ import { MongoDataBase } from '@db/database';
 import { ICharacter } from '@interfaces/character.interface';
 import { ID } from '@interfaces/id.type';
 
-const projection = {
-    name: 1,
-    image: 1
+const excludeProjection = {
+    _id: 0,
+    age: 0,
+    history: 0,
+    movies: 0,
+    createdAt: 0,
+    updatedAt: 0
 };
 export class CharactersRepository {
     readonly entity = ENTITIES.CHARACTERS;
@@ -17,8 +21,12 @@ export class CharactersRepository {
     ): Promise<ICharacter | null> =>
         await this.persistence.save(this.entity, character);
 
-    public getAllCharacters = async (): Promise<ICharacter[] | null> =>
-        await this.persistence.getAll(this.entity, projection);
+    public getAllCharacters = async (): Promise<ICharacter[] | null> => {
+        const a = await this.persistence.getAll(this.entity, excludeProjection);
+        const b = a[0].populated('movies');
+        console.log(b);
+        return a;
+    };
 
     public getCharacterById = async (id: ID): Promise<ICharacter | null> =>
         await this.persistence.getById(this.entity, id);

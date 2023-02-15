@@ -52,7 +52,11 @@ const getCharacter = async (req: Request, res: Response) => {
             return res.status(404).json({ errors: 'character not found' });
         return res.status(200).json({ results });
     } else if (movie && !name && !ageString) {
+        /**
+         * retorna los personajes de una pelicula
+         */
         const results = await MovieService.getMovieById(movie.toString());
+        console.log(results);
         if (!results)
             return res.status(404).json({ errors: 'movie not found' });
         return res.status(200).json({ results: results.characters });

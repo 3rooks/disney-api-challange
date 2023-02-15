@@ -3,6 +3,12 @@ import { MongoDataBase } from '@db/database';
 import { IGender } from '@interfaces/gender.interface';
 import { ID } from '@interfaces/id.type';
 
+const excludeProjection = {
+    movies: 0,
+    createdAt: 0,
+    updatedAt: 0
+};
+
 export class GendersRepository {
     readonly entity = ENTITIES.GENDERS;
 
@@ -12,7 +18,7 @@ export class GendersRepository {
         await this.persistence.getById(this.entity, id);
 
     public getAllGenders = async (): Promise<IGender[] | null> =>
-        await this.persistence.getAll(this.entity, undefined);
+        await this.persistence.getAll(this.entity, excludeProjection);
 
     public createGender = async (gender: IGender): Promise<IGender | null> =>
         await this.persistence.save(this.entity, gender);

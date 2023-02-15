@@ -40,9 +40,9 @@ const genderSchema = new Schema<IGender>(
     }
 );
 
-genderSchema.pre('find', function () {
-    this.populate('movies.movie');
-});
+// genderSchema.pre('find', function () {
+//     this.populate('movies.movie');
+// });
 genderSchema.pre('findOne', function () {
     this.populate('movies.movie');
 });

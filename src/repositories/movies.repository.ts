@@ -4,6 +4,7 @@ import { ID } from '@interfaces/id.type';
 import { IMovie } from '@interfaces/movie.interface';
 
 const excludeProjection = {
+    _id: 0,
     characters: 0,
     rated: 0,
     genders: 0,

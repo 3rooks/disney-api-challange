@@ -45,6 +45,13 @@ const characterSchema = new Schema<ICharacter>(
     { timestamps: true, versionKey: false }
 );
 
+// characterSchema.post('find', function () {
+//     this.populate('movies.movie');
+// });
+characterSchema.pre('findOne', function () {
+    this.populate('movies.movie');
+});
+
 export const CharacterModel = model<ICharacter>(
     ENTITIES.CHARACTERS,
     characterSchema
