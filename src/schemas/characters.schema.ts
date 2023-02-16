@@ -1,9 +1,11 @@
 import { ENTITIES } from '@constants/entities';
+import { POPULATE_KEYS } from '@constants/populate-keys';
 import { ICharacter } from '@interfaces/character.interface';
 import mongoose from 'mongoose';
 import uuidv4 from 'uuid-random';
 
 const { Schema, model } = mongoose;
+const { key, movies } = POPULATE_KEYS;
 
 const characterSchema = new Schema<ICharacter>(
     {
@@ -45,11 +47,8 @@ const characterSchema = new Schema<ICharacter>(
     { timestamps: true, versionKey: false }
 );
 
-// characterSchema.post('find', function () {
-//     this.populate('movies.movie');
-// });
-characterSchema.pre('findOne', function () {
-    this.populate('movies.movie');
+characterSchema.pre(key, function () {
+    this.populate(movies);
 });
 
 export const CharacterModel = model<ICharacter>(

@@ -3,4 +3,6 @@ export interface IGender {
     name: string;
     image: string;
     movies?: { movie: string }[];
+    createdAt?: Date;
+    updatedAt?: Date;
 }

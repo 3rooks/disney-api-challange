@@ -38,23 +38,23 @@ export class MongoDataBase {
         await this.entities[entity].insertMany(data);
 
     public getBy = async (entity: string, data: object) =>
-        await this.entities[entity].findOne(data);
+        await this.entities[entity].findOne(data).lean().exec();
 
     public getAll = async (entity: string, projection: object | undefined) =>
-        await this.entities[entity].find({}, projection);
-
-    public getAllBy = async (entity: string, data: object) =>
-        await this.entities[entity].aggregate([{ $match: data }]);
-
-    public getAllSorted = async (entity: string, sort: any) =>
-        await this.entities[entity].aggregate([{ $sort: sort }]);
+        await this.entities[entity].find({}, projection).lean().exec();
 
     public getById = async (entity: string, id: string) =>
-        await this.entities[entity].findById(id);
+        await this.entities[entity].findById(id).lean().exec();
 
     public updateById = async (entity: string, id: string, data: object) =>
-        await this.entities[entity].findByIdAndUpdate(id, data);
+        await this.entities[entity].findByIdAndUpdate(id, data).lean().exec();
 
     public deleteById = async (entity: string, id: string) =>
-        await this.entities[entity].findByIdAndDelete(id);
+        await this.entities[entity].findByIdAndDelete(id).lean().exec();
+
+    public getAllBy = async (entity: string, data: object) =>
+        await this.entities[entity].aggregate([{ $match: data }]).exec();
+
+    public getAllSorted = async (entity: string, sort: any) =>
+        await this.entities[entity].aggregate([{ $sort: sort }]).exec();
 }

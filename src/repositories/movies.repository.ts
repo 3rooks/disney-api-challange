@@ -2,9 +2,9 @@ import { ENTITIES } from '@constants/entities';
 import { MongoDataBase } from '@db/database';
 import { ID } from '@interfaces/id.type';
 import { IMovie } from '@interfaces/movie.interface';
+import { LeanDocument, NullExpression } from 'mongoose';
 
 const excludeProjection = {
-    _id: 0,
     characters: 0,
     rated: 0,
     genders: 0,
@@ -17,32 +17,43 @@ export class MoviesRepository {
 
     constructor(private persistence: MongoDataBase) {}
 
-    public getMovieById = async (id: ID): Promise<IMovie | null> =>
-        await this.persistence.getById(this.entity, id);
-
-    public getAllMovies = async (): Promise<IMovie[] | null> =>
-        await this.persistence.getAll(this.entity, excludeProjection);
-
-    public createMovie = async (movie: IMovie): Promise<IMovie | null> =>
+    public createMovie = async (
+        movie: IMovie
+    ): Promise<IMovie | NullExpression> =>
         await this.persistence.save(this.entity, movie);
 
-    public getMoviesSorted = async (sortBy: object): Promise<IMovie[] | null> =>
-        await this.persistence.getAllSorted(this.entity, sortBy);
+    public createManyMovies = async (
+        data: IMovie[]
+    ): Promise<IMovie[] | NullExpression> =>
+        await this.persistence.saveMany(this.entity, data);
 
-    public getMovieBy = async (getBy: object): Promise<IMovie | null> =>
+    public getAllMovies = async (): Promise<
+        LeanDocument<IMovie>[] | NullExpression
+    > => await this.persistence.getAll(this.entity, excludeProjection);
+
+    public getMovieById = async (
+        id: ID
+    ): Promise<LeanDocument<IMovie> | NullExpression> =>
+        await this.persistence.getById(this.entity, id);
+
+    public getMovieBy = async (
+        getBy: object
+    ): Promise<LeanDocument<IMovie> | NullExpression> =>
         await this.persistence.getBy(this.entity, getBy);
 
     public updateMovieById = async (
         id: ID,
         movie: IMovie
-    ): Promise<IMovie | null> =>
+    ): Promise<LeanDocument<IMovie> | NullExpression> =>
         await this.persistence.updateById(this.entity, id, movie);
 
-    public deleteMovieById = async (id: ID): Promise<IMovie | null> =>
+    public deleteMovieById = async (
+        id: ID
+    ): Promise<LeanDocument<IMovie> | NullExpression> =>
         await this.persistence.deleteById(this.entity, id);
 
-    public createManyMovies = async (
-        data: IMovie[]
-    ): Promise<IMovie[] | null> =>
-        await this.persistence.saveMany(this.entity, data);
+    public getMoviesSorted = async (
+        sortBy: object
+    ): Promise<IMovie[] | NullExpression> =>
+        await this.persistence.getAllSorted(this.entity, sortBy);
 }

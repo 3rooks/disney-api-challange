@@ -4,30 +4,15 @@ import { UserService } from '@services/repository.service';
 import { HandlerError } from '@utils/handler-error';
 import { Request, Response } from 'express';
 
-export class Auth extends HandlerError {
+export class AuthController extends HandlerError {
     private try = this.handlerError;
 
-    public register = this.try(postRegister);
+    public login = this.try(login);
 
-    public login = this.try(postLogin);
+    public register = this.try(register);
 }
 
-const postRegister = async (req: Request, res: Response) => {
-    const { username, email, password } = req.body;
-
-    const existUser = await UserService.getUserBy({ email });
-    if (existUser) return res.status(409).json({ errors: 'user conflict' });
-
-    const passwordHashed = await createHash(password);
-
-    const user = { username, email, password: passwordHashed };
-
-    await UserService.registerUser(user);
-
-    return res.status(201).json({ results: 'user created' });
-};
-
-const postLogin = async (req: Request, res: Response) => {
+const login = async (req: Request, res: Response) => {
     const { email, password } = req.body;
 
     const user = await UserService.getUserBy({ email });
@@ -42,4 +27,19 @@ const postLogin = async (req: Request, res: Response) => {
     const token = signAsync(payload);
 
     return res.status(200).json({ token });
+};
+
+const register = async (req: Request, res: Response) => {
+    const { username, email, password } = req.body;
+
+    const existUser = await UserService.getUserBy({ email });
+    if (existUser) return res.status(409).json({ errors: 'user conflict' });
+
+    const passwordHashed = await createHash(password);
+
+    const user = { username, email, password: passwordHashed };
+
+    await UserService.registerUser(user);
+
+    return res.status(201).json({ results: 'user created' });
 };

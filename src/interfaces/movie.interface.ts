@@ -9,4 +9,6 @@ export interface IMovie {
     rated: number;
     releaseYear: number;
     characters?: IMovieCharacters[];
+    createdAt?: Date;
+    updatedAt?: Date;
 }

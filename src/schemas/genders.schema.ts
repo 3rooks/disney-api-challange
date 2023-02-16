@@ -1,9 +1,11 @@
 import { ENTITIES } from '@constants/entities';
+import { POPULATE_KEYS } from '@constants/populate-keys';
 import { IGender } from '@interfaces/gender.interface';
 import mongoose from 'mongoose';
 import uuidv4 from 'uuid-random';
 
 const { Schema, model } = mongoose;
+const { key, movies } = POPULATE_KEYS;
 
 const genderSchema = new Schema<IGender>(
     {
@@ -40,11 +42,8 @@ const genderSchema = new Schema<IGender>(
     }
 );
 
-// genderSchema.pre('find', function () {
-//     this.populate('movies.movie');
-// });
-genderSchema.pre('findOne', function () {
-    this.populate('movies.movie');
+genderSchema.pre(key, function () {
+    this.populate(movies);
 });
 
 export const GenderModel = model<IGender>(ENTITIES.GENDERS, genderSchema);

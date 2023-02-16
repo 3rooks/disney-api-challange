@@ -1,3 +1,4 @@
+import { ICharacter } from '@interfaces/character.interface';
 import { CharacterService, MovieService } from '@services/repository.service';
 import { HandlerError } from '@utils/handler-error';
 import { Request, Response } from 'express';
@@ -20,19 +21,17 @@ export class CharacterController extends HandlerError {
     public deleteMovie = this.try(deleteMovie);
 }
 
-const getCharacterById = async (req: Request, res: Response) => {
-    const { idCharacter } = req.params;
-
-    const results = await CharacterService.getCharacterById(idCharacter);
-    if (!results)
-        return res.status(404).json({ errors: 'character not found' });
-
-    return res.status(200).json({ results });
-};
-
 const getCharacter = async (req: Request, res: Response) => {
     if (Object.keys(req.query).length === 0) {
-        const results = await CharacterService.getAllCharacters();
+        const exclude = {
+            age: 0,
+            history: 0,
+            movies: 0,
+            createdAt: 0,
+            updatedAt: 0
+        };
+
+        const results = await CharacterService.getAllCharacters(exclude);
         return res.status(200).json({ results });
     }
 
@@ -56,11 +55,20 @@ const getCharacter = async (req: Request, res: Response) => {
          * retorna los personajes de una pelicula
          */
         const results = await MovieService.getMovieById(movie.toString());
-        console.log(results);
         if (!results)
             return res.status(404).json({ errors: 'movie not found' });
         return res.status(200).json({ results: results.characters });
     } else return res.status(400).json({ errors: 'bad request' });
+};
+
+const getCharacterById = async (req: Request, res: Response) => {
+    const { idCharacter } = req.params;
+
+    const results = await CharacterService.getCharacterById(idCharacter);
+    if (!results)
+        return res.status(404).json({ errors: 'character not found' });
+
+    return res.status(200).json({ results });
 };
 
 const postCharacter = async (req: Request, res: Response) => {
@@ -72,7 +80,7 @@ const postCharacter = async (req: Request, res: Response) => {
     if (existCharacter)
         return res.status(409).json({ errors: 'character conflict' });
 
-    const character = {
+    const character: ICharacter = {
         name,
         image,
         age,
@@ -98,6 +106,7 @@ const putCharacter = async (req: Request, res: Response) => {
         return res.status(409).json({ errors: 'character conflict' });
 
     const updatedCharacter = {
+        ...character,
         name,
         image,
         age,

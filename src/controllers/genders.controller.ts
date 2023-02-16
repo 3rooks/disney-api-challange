@@ -21,7 +21,12 @@ export class GenderController extends HandlerError {
 }
 
 const getGender = async (_: Request, res: Response) => {
-    const results = await GenderService.getAllGenders();
+    const excludeProjection = {
+        movies: 0,
+        createdAt: 0,
+        updatedAt: 0
+    };
+    const results = await GenderService.getAllGenders(excludeProjection);
     res.status(200).json({ results });
 };
 

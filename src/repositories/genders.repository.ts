@@ -2,41 +2,46 @@ import { ENTITIES } from '@constants/entities';
 import { MongoDataBase } from '@db/database';
 import { IGender } from '@interfaces/gender.interface';
 import { ID } from '@interfaces/id.type';
-
-const excludeProjection = {
-    movies: 0,
-    createdAt: 0,
-    updatedAt: 0
-};
+import { LeanDocument, NullExpression } from 'mongoose';
 
 export class GendersRepository {
     readonly entity = ENTITIES.GENDERS;
 
     constructor(private persistence: MongoDataBase) {}
 
-    public getGenderById = async (id: ID): Promise<IGender | null> =>
-        await this.persistence.getById(this.entity, id);
-
-    public getAllGenders = async (): Promise<IGender[] | null> =>
-        await this.persistence.getAll(this.entity, excludeProjection);
-
-    public createGender = async (gender: IGender): Promise<IGender | null> =>
+    public createGender = async (
+        gender: IGender
+    ): Promise<IGender | NullExpression> =>
         await this.persistence.save(this.entity, gender);
 
-    public deleteGenderById = async (id: ID): Promise<IGender | null> =>
-        await this.persistence.deleteById(this.entity, id);
+    public createManyGenders = async (
+        data: IGender[]
+    ): Promise<IGender[] | NullExpression> =>
+        await this.persistence.saveMany(this.entity, data);
+
+    public getGenderBy = async (
+        getBy: object
+    ): Promise<LeanDocument<IGender> | NullExpression> =>
+        await this.persistence.getBy(this.entity, getBy);
+
+    public getGenderById = async (
+        id: ID
+    ): Promise<LeanDocument<IGender> | NullExpression> =>
+        await this.persistence.getById(this.entity, id);
+
+    public getAllGenders = async (
+        projection: object
+    ): Promise<LeanDocument<IGender>[] | NullExpression> =>
+        await this.persistence.getAll(this.entity, projection);
 
     public updatedGenderById = async (
         id: ID,
         gender: IGender
-    ): Promise<IGender | null> =>
+    ): Promise<LeanDocument<IGender> | NullExpression> =>
         await this.persistence.updateById(this.entity, id, gender);
 
-    public createManyGenders = async (
-        data: IGender[]
-    ): Promise<IGender[] | null> =>
-        await this.persistence.saveMany(this.entity, data);
-
-    public getGenderBy = async (getBy: object): Promise<IGender | null> =>
-        await this.persistence.getBy(this.entity, getBy);
+    public deleteGenderById = async (
+        id: ID
+    ): Promise<LeanDocument<IGender> | NullExpression> =>
+        await this.persistence.deleteById(this.entity, id);
 }

@@ -9,4 +9,6 @@ export interface ICharacter {
     age: number;
     history: string;
     movies?: ICharacterMovie[];
+    createdAt?: Date;
+    updatedAt?: Date;
 }

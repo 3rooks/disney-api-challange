@@ -137,13 +137,16 @@ const putMovie = async (req: Request, res: Response) => {
     const existMovieTitle = await MovieService.getMovieBy({ title });
     if (existMovieTitle)
         return res.status(409).json({ errors: 'movie conflic' });
-
+    console.log(existMovie);
     const movie = {
+        ...existMovie,
         title,
         image,
         rated,
         releaseYear
     };
+
+    console.log(movie);
     await MovieService.updateMovieById(idMovie, movie);
 
     return res.status(200).json({ results: 'movie updated' });

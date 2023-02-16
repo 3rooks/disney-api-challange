@@ -1,9 +1,11 @@
 import { ENTITIES } from '@constants/entities';
+import { POPULATE_KEYS } from '@constants/populate-keys';
 import { IMovie } from '@interfaces/movie.interface';
 import mongoose from 'mongoose';
 import uuidv4 from 'uuid-random';
 
 const { Schema, model } = mongoose;
+const { key, characters } = POPULATE_KEYS;
 
 const movieSchema = new Schema<IMovie>(
     {
@@ -46,11 +48,8 @@ const movieSchema = new Schema<IMovie>(
     }
 );
 
-// movieSchema.pre('find', function () {
-//     this.populate('characters.character');
-// });
-movieSchema.pre('findOne', function () {
-    this.populate('characters.character');
+movieSchema.pre(key, function () {
+    this.populate(characters);
 });
 
 export const MovieModel = model<IMovie>(ENTITIES.MOVIES, movieSchema);
