@@ -1,30 +1,56 @@
 import { CharacterController } from '@controllers/characters.controller';
+import { CharacterDTO } from '@dtos/characters/character.dto';
 import { Router } from 'express';
 
-const {
-    postMovie,
-    deleteMovie,
-    getCharacter,
-    putCharacter,
-    postCharacter,
-    deleteCharacter,
-    getCharacterById
-} = new CharacterController();
+export class CharacterRoutes {
+    constructor(
+        readonly router: Router,
+        private dto: CharacterDTO,
+        private ctrl: CharacterController
+    ) {
+        this.init();
+    }
 
-const charactersRoute = Router();
+    private init = () => {
+        this.router.get('/characters', this.ctrl.getCharacter);
 
-charactersRoute.get('/characters', getCharacter);
+        this.router.get(
+            '/characters/:idCharacter',
+            this.dto.params.idCharacter,
+            this.ctrl.getCharacterById
+        );
 
-charactersRoute.get('/characters/:idCharacter', getCharacterById);
+        this.router.post(
+            '/characters',
+            this.dto.body.postCharacter,
+            this.ctrl.postCharacter
+        );
 
-charactersRoute.post('/characters', postCharacter);
+        this.router.post(
+            '/characters/:idCharacter/movie',
+            this.dto.params.idCharacter,
+            this.dto.body.postMovie,
+            this.ctrl.postMovie
+        );
 
-charactersRoute.post('/characters/:idCharacter/movie', postMovie);
+        this.router.put(
+            '/characters/:idCharacter',
+            this.dto.params.idCharacter,
+            this.dto.body.putCharacter,
+            this.ctrl.putCharacter
+        );
 
-charactersRoute.put('/characters/:idCharacter', putCharacter);
+        this.router.delete(
+            '/characters/:idCharacter/movie/:idMovie',
+            this.dto.params.idCharacter,
+            this.dto.params.idMovie,
+            this.ctrl.deleteMovie
+        );
 
-charactersRoute.delete('/characters/:idCharacter/movie/:idMovie', deleteMovie);
-
-charactersRoute.delete('/characters/:idCharacter', deleteCharacter);
-
-export default charactersRoute;
+        this.router.delete(
+            '/characters/:idCharacter',
+            this.dto.params.idCharacter,
+            this.ctrl.deleteCharacter
+        );
+    };
+}

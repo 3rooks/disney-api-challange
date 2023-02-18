@@ -1,4 +1,4 @@
-interface IMovieCharacters {
+export interface IMovieCharacters {
     character: string;
 }
 

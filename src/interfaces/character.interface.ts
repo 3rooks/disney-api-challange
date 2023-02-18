@@ -1,4 +1,4 @@
-interface ICharacterMovie {
+export interface ICharacterMovie {
     movie: string;
 }
 

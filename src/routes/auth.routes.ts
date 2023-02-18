@@ -1,11 +1,20 @@
 import { AuthController } from '@controllers/auth.controller';
+import { AuthDTO } from '@dtos/auth/auth.dto';
 import { Router } from 'express';
+export class AuthRoutes {
+    private login = '/auth/login';
+    private register = '/auth/register';
 
-const { login, register } = new AuthController();
+    constructor(
+        readonly router: Router,
+        private dto: AuthDTO,
+        private ctrl: AuthController
+    ) {
+        this.init();
+    }
 
-const authRoute = Router();
-
-authRoute.post('/auth/register', register);
-authRoute.post('/auth/login', login);
-
-export default authRoute;
+    private init = () => {
+        this.router.post(this.login, this.dto.login, this.ctrl.login);
+        this.router.post(this.register, this.dto.register, this.ctrl.register);
+    };
+}

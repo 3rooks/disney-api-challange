@@ -1,30 +1,54 @@
 import { MovieController } from '@controllers/movies.controller';
+import { MovieDTO } from '@dtos/movies/movie.dto';
 import { Router } from 'express';
 
-const {
-    putMovie,
-    getMovies,
-    postMovie,
-    deleteMovie,
-    getMovieById,
-    postCharacter,
-    deleteCharacter
-} = new MovieController();
+export class MovieRoutes {
+    constructor(
+        readonly router: Router,
+        private dto: MovieDTO,
+        private ctrl: MovieController
+    ) {
+        this.init();
+    }
 
-const moviesRoute = Router();
+    private init = () => {
+        this.router.get('/movies', this.ctrl.getMovies);
 
-moviesRoute.get('/movies', getMovies);
+        this.router.get(
+            '/movies/:idMovie',
+            this.dto.params.idMovie,
+            this.ctrl.getMovieById
+        );
 
-moviesRoute.get('/movies/:idMovie', getMovieById);
+        this.router.post(
+            '/movies',
+            this.dto.body.postMovie,
+            this.ctrl.postMovie
+        );
 
-moviesRoute.post('/movies', postMovie);
+        this.router.post(
+            '/movies/:idMovie/character',
+            this.dto.params.idMovie,
+            this.ctrl.postCharacter
+        );
 
-moviesRoute.post('/movies/:idMovie/character', postCharacter);
+        this.router.put(
+            '/movies/:idMovie',
+            this.dto.params.idMovie,
+            this.ctrl.putMovie
+        );
 
-moviesRoute.put('/movies/:idMovie', putMovie);
+        this.router.delete(
+            '/movies/:idMovie/character/:idCharacter',
+            this.dto.params.idMovie,
+            this.dto.params.idCharacter,
+            this.ctrl.deleteCharacter
+        );
 
-moviesRoute.delete('/movies/:idMovie/character/:idCharacter', deleteCharacter);
-
-moviesRoute.delete('/movies/:idMovie', deleteMovie);
-
-export default moviesRoute;
+        this.router.delete(
+            '/movies/:idMovie',
+            this.dto.params.idMovie,
+            this.ctrl.deleteMovie
+        );
+    };
+}

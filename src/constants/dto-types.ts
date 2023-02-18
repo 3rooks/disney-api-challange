@@ -4,7 +4,7 @@ import { Type } from '@sinclair/typebox';
  * Common types
  */
 
-export const idDTOSchema = Type.String({
+export const idType = Type.String({
     format: 'uuid',
     errorMessage: {
         type: '${0#} must be a string',
@@ -29,7 +29,7 @@ export const imageDTOSchema = Type.String({
 
 export const usernameType = Type.String({
     minLength: 2,
-    maxLength: 20,
+    maxLength: 15,
     errorMessage: {
         type: '${0#} must be a string',
         format: '${0#} should be a string',

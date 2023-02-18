@@ -4,11 +4,13 @@ import { GendersRepository } from '@repositories/genders.repository';
 import { MoviesRepository } from '@repositories/movies.repository';
 import { UsersRepository } from '@repositories/users.repository';
 
-const MongoService = new MongoDataBase();
+export class RepositoryService {
+    public users = new UsersRepository(this.persistence);
+    public movies = new MoviesRepository(this.persistence);
+    public genders = new GendersRepository(this.persistence);
+    public characters = new CharactersRepository(this.persistence);
 
-export const UserService = new UsersRepository(MongoService);
-export const MovieService = new MoviesRepository(MongoService);
-export const GenderService = new GendersRepository(MongoService);
-export const CharacterService = new CharactersRepository(MongoService);
+    constructor(readonly persistence: MongoDataBase) {}
+}
 
-export default MongoService;
+export const Services = new RepositoryService(new MongoDataBase());

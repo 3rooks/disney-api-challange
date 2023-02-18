@@ -1,8 +1,4 @@
-import {
-    CharacterService,
-    GenderService,
-    MovieService
-} from '@services/repository.service';
+import { Services } from '@services/repository.service';
 import genFakerData, {
     characterFaker,
     genderFaker,
@@ -16,13 +12,15 @@ const randomController = async (
     next: NextFunction
 ) => {
     try {
-        await MovieService.createManyMovies(await genFakerData(movieFaker, 10));
+        await Services.movies.createManyMovies(
+            await genFakerData(movieFaker, 10)
+        );
 
-        await GenderService.createManyGenders(
+        await Services.genders.createManyGenders(
             await genFakerData(genderFaker, 10)
         );
 
-        await CharacterService.createManyCharacters(
+        await Services.characters.createManyCharacters(
             await genFakerData(characterFaker, 10)
         );
 

@@ -1,30 +1,54 @@
 import { GenderController } from '@controllers/genders.controller';
+import { GenderDTO } from '@dtos/genders/gender.dto';
 import { Router } from 'express';
 
-const {
-    postMovie,
-    putGender,
-    getGender,
-    postGender,
-    deleteMovie,
-    deleteGender,
-    getGenderById
-} = new GenderController();
+export class GenderRoutes {
+    constructor(
+        readonly router: Router,
+        private dto: GenderDTO,
+        private ctrl: GenderController
+    ) {
+        this.init();
+    }
 
-const gendersRoute = Router();
+    private init = () => {
+        this.router.get('/genders', this.ctrl.getGender);
 
-gendersRoute.get('/genders', getGender);
+        this.router.get(
+            '/genders/:idGender',
+            this.dto.params.idGender,
+            this.ctrl.getGenderById
+        );
 
-gendersRoute.get('/genders/:idGender', getGenderById);
+        this.router.post(
+            '/genders',
+            this.dto.body.postGender,
+            this.ctrl.postGender
+        );
 
-gendersRoute.post('/genders', postGender);
+        this.router.post(
+            '/genders/:idGender/movie',
+            this.dto.params.idGender,
+            this.ctrl.postMovie
+        );
 
-gendersRoute.post('/genders/:idGender/movie', postMovie);
+        this.router.put(
+            '/genders/:idGender',
+            this.dto.params.idGender,
+            this.ctrl.putGender
+        );
 
-gendersRoute.put('/genders/:idGender', putGender);
+        this.router.delete(
+            '/genders/:idGender/movie/:idMovie',
+            this.dto.params.idGender,
+            this.dto.params.idMovie,
+            this.ctrl.deleteMovie
+        );
 
-gendersRoute.delete('/genders/:idGender/movie/:idMovie', deleteMovie);
-
-gendersRoute.delete('/genders/:idGender', deleteGender);
-
-export default gendersRoute;
+        this.router.delete(
+            '/genders/:idGender',
+            this.dto.params.idGender,
+            this.ctrl.deleteGender
+        );
+    };
+}

@@ -1,18 +1,43 @@
 import { UserController } from '@controllers/users.controller';
-import userAuth from '@utils/user-auth';
+import { UserDTO } from '@dtos/users/user.dto';
 import { Router } from 'express';
 
-const { deleteUser, patchEmail, patchUsername, patchPassword } =
-    new UserController();
+export class UserRoutes {
+    constructor(
+        readonly router: Router,
+        private dto: UserDTO,
+        private ctrl: UserController
+    ) {
+        this.init();
+    }
 
-const usersRoute = Router();
+    private init = () => {
+        this.router.patch(
+            '/auth/username',
+            this.dto.auth,
+            this.dto.body.patchUsername,
+            this.ctrl.patchUsername
+        );
 
-usersRoute.patch('/auth/username', userAuth, patchUsername);
+        this.router.patch(
+            '/auth/email',
+            this.dto.auth,
+            this.dto.body.patchEmail,
+            this.ctrl.patchEmail
+        );
 
-usersRoute.patch('/auth/email', userAuth, patchEmail);
+        this.router.patch(
+            '/auth/password',
+            this.dto.auth,
+            this.dto.body.patchPassword,
+            this.ctrl.patchPassword
+        );
 
-usersRoute.patch('/auth/password', userAuth, patchPassword);
-
-usersRoute.delete('/auth/unregister', userAuth, deleteUser);
-
-export default usersRoute;
+        this.router.delete(
+            '/auth/unregister',
+            this.dto.auth,
+            this.dto.body.deleteUser,
+            this.ctrl.deleteUser
+        );
+    };
+}

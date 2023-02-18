@@ -1,5 +1,5 @@
 import { compareHash, createHash } from '@lib/bcrypt';
-import { UserService } from '@services/repository.service';
+import { RepositoryService } from '@services/repository.service';
 import { HandlerError } from '@utils/handler-error';
 import { ReqAuth } from '@utils/user-auth';
 import { Response } from 'express';
@@ -7,72 +7,134 @@ import { Response } from 'express';
 export class UserController extends HandlerError {
     private try = this.handlerError;
 
-    public patchUsername = this.try(patchUsername);
+    constructor(readonly service: RepositoryService) {
+        super();
+    }
 
-    public patchEmail = this.try(patchEmail);
+    public patchUsername = this.try(async (req: ReqAuth, res: Response) => {
+        const { id } = req;
+        const { username } = req.body;
 
-    public patchPassword = this.try(patchPassword);
+        const user = await this.service.users.getUserById(id);
 
-    public deleteUser = this.try(deleteUser);
+        if (!user) return res.status(404).json({ errors: 'user not found' });
+
+        user.username = username;
+
+        await this.service.users.updateUserById(id, user);
+
+        return res.status(200).json({ results: 'user updated' });
+    });
+
+    public patchEmail = this.try(async (req: ReqAuth, res: Response) => {
+        const { id } = req;
+        const { email } = req.body;
+
+        const user = await this.service.users.getUserById(id);
+
+        if (!user) return res.status(404).json({ errors: 'user not found' });
+
+        user.email = email;
+
+        await this.service.users.updateUserById(id, user);
+
+        return res.status(200).json({ results: 'user updated' });
+    });
+
+    public patchPassword = this.try(async (req: ReqAuth, res: Response) => {
+        const { id } = req;
+        const { oldPassword, newPassword } = req.body;
+
+        const user = await this.service.users.getUserById(id);
+
+        if (!user) return res.status(404).json({ errors: 'user not found' });
+
+        const checkPassword = await compareHash(oldPassword, user);
+        if (!checkPassword)
+            return res.status(401).json({ errors: 'unauthorized' });
+
+        user.password = await createHash(newPassword);
+        await this.service.users.updateUserById(id, user);
+
+        return res.status(200).json({ results: 'user updated' });
+    });
+
+    public deleteUser = this.try(async (req: ReqAuth, res: Response) => {
+        const { id } = req;
+        const { password } = req.body;
+
+        const existUser = await this.service.users.getUserById(id);
+
+        if (!existUser)
+            return res.status(401).json({ errors: 'user unauthorized' });
+
+        const equalPassword = await compareHash(password, existUser);
+        if (!equalPassword)
+            return res.status(401).json({ errors: 'user unauthorized' });
+
+        await this.service.users.deleteUserById(id);
+
+        return res.status(200).json({ results: 'user deleted' });
+    });
 }
 
-const patchUsername = async (req: ReqAuth, res: Response) => {
-    const { id } = req;
-    const { username } = req.body;
+// const patchUsername = async (req: ReqAuth, res: Response) => {
+//     const { id } = req;
+//     const { username } = req.body;
 
-    const user = await UserService.getUserById(id);
-    if (!user) return res.status(404).json({ errors: 'user not found' });
+//     const user = await UserService.getUserById(id);
+//     if (!user) return res.status(404).json({ errors: 'user not found' });
 
-    user.username = username;
+//     user.username = username;
 
-    await UserService.updateUserById(id, user);
+//     await UserService.updateUserById(id, user);
 
-    return res.status(200).json({ results: 'user updated' });
-};
+//     return res.status(200).json({ results: 'user updated' });
+// }
 
-const patchEmail = async (req: ReqAuth, res: Response) => {
-    const { id } = req;
-    const { email } = req.body;
+// const patchEmail = async (req: ReqAuth, res: Response) => {
+//     const { id } = req;
+//     const { email } = req.body;
 
-    const user = await UserService.getUserById(id);
-    if (!user) return res.status(404).json({ errors: 'user not found' });
+//     const user = await UserService.getUserById(id);
+//     if (!user) return res.status(404).json({ errors: 'user not found' });
 
-    user.email = email;
+//     user.email = email;
 
-    await UserService.updateUserById(id, user);
+//     await UserService.updateUserById(id, user);
 
-    return res.status(200).json({ results: 'user updated' });
-};
+//     return res.status(200).json({ results: 'user updated' });
+// }
 
-const patchPassword = async (req: ReqAuth, res: Response) => {
-    const { id } = req;
-    const { oldPassword, newPassword } = req.body;
+// const patchPassword = async (req: ReqAuth, res: Response) => {
+//     const { id } = req;
+//     const { oldPassword, newPassword } = req.body;
 
-    const user = await UserService.getUserById(id);
-    if (!user) return res.status(404).json({ errors: 'user not found' });
+//     const user = await UserService.getUserById(id);
+//     if (!user) return res.status(404).json({ errors: 'user not found' });
 
-    const checkPassword = await compareHash(oldPassword, user);
-    if (!checkPassword) return res.status(401).json({ errors: 'unauthorized' });
+//     const checkPassword = await compareHash(oldPassword, user);
+//     if (!checkPassword) return res.status(401).json({ errors: 'unauthorized' });
 
-    user.password = await createHash(newPassword);
-    await UserService.updateUserById(id, user);
+//     user.password = await createHash(newPassword);
+//     await UserService.updateUserById(id, user);
 
-    return res.status(200).json({ results: 'user updated' });
-};
+//     return res.status(200).json({ results: 'user updated' });
+// }
 
-const deleteUser = async (req: ReqAuth, res: Response) => {
-    const { id } = req;
-    const { password } = req.body;
+// const deleteUser = async (req: ReqAuth, res: Response) => {
+//     const { id } = req;
+//     const { password } = req.body;
 
-    const existUser = await UserService.getUserById(id);
-    if (!existUser)
-        return res.status(401).json({ errors: 'user unauthorized' });
+//     const existUser = await UserService.getUserById(id);
+//     if (!existUser)
+//         return res.status(401).json({ errors: 'user unauthorized' });
 
-    const equalPassword = await compareHash(password, existUser);
-    if (!equalPassword)
-        return res.status(401).json({ errors: 'user unauthorized' });
+//     const equalPassword = await compareHash(password, existUser);
+//     if (!equalPassword)
+//         return res.status(401).json({ errors: 'user unauthorized' });
 
-    await UserService.deleteUserById(id);
+//     await UserService.deleteUserById(id);
 
-    return res.status(200).json({ results: 'user deleted' });
-};
+//     return res.status(200).json({ results: 'user deleted' });
+// }

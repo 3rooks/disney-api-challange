@@ -12,7 +12,7 @@ const userAuth = async () => {
             if (!authorization)
                 return res.status(401).json({ errors: 'user unauthorized' });
 
-            const jwt: String = authorization.split(' ')[1];
+            const jwt: string = authorization.split(' ')[1];
             if (!jwt)
                 return res.status(401).json({ errors: 'user unauthorized' });
 

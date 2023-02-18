@@ -1,28 +1,32 @@
-import authRoute from '@routes/auth.routes';
-import charactersRoute from '@routes/characters.routes';
-import gendersRoute from '@routes/genders.routes';
-import moviesRoute from '@routes/movies.routes';
 import randomRoute from '@routes/random.routes';
-import usersRoute from '@routes/users.routes';
+import { Routes } from '@routes/routes';
 import { PUBLIC_PATH } from '@utils/paths';
-import express, { NextFunction, Request, Response } from 'express';
+import express, { Express, NextFunction, Request, Response } from 'express';
 
-const application = express();
+export class ExpressApplication {
+    private base = '/api/v1';
 
-application.use(express.json());
-application.use(express.urlencoded({ extended: true }));
-application.use(express.static(PUBLIC_PATH));
+    constructor(readonly application: Express, private routes: Routes) {
+        this.init();
+    }
 
-application.use('/api/v1', authRoute);
-application.use('/api/v1', usersRoute);
-application.use('/api/v1', moviesRoute);
-application.use('/api/v1', gendersRoute);
-application.use('/api/v1', charactersRoute);
-application.use('/api/v1/random', randomRoute);
+    private init = () => {
+        this.application.use(express.json());
+        this.application.use(express.urlencoded({ extended: true }));
+        this.application.use(express.static(PUBLIC_PATH));
 
-application.use((err: Error, _: Request, res: Response, __: NextFunction) => {
-    console.log(err.stack);
-    res.status(500).json({ errors: err.message });
-});
+        this.application.use(this.base, this.routes.auth.router);
+        this.application.use(this.base, this.routes.users.router);
+        this.application.use(this.base, this.routes.movies.router);
+        this.application.use(this.base, this.routes.genders.router);
+        this.application.use(this.base, this.routes.characters.router);
+        this.application.use('/api/v1/random', randomRoute);
 
-export default application;
+        this.application.use(
+            (err: Error, _: Request, res: Response, __: NextFunction) => {
+                console.log(err.stack);
+                res.status(500).json({ errors: err.message });
+            }
+        );
+    };
+}
