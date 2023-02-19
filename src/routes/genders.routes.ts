@@ -12,7 +12,7 @@ export class GenderRoutes {
     }
 
     private init = () => {
-        this.router.get('/genders', this.ctrl.getGender);
+        this.router.get('/genders', this.ctrl.getGenders);
 
         this.router.get(
             '/genders/:idGender',
@@ -29,12 +29,14 @@ export class GenderRoutes {
         this.router.post(
             '/genders/:idGender/movie',
             this.dto.params.idGender,
+            this.dto.body.postMovie,
             this.ctrl.postMovie
         );
 
         this.router.put(
             '/genders/:idGender',
             this.dto.params.idGender,
+            this.dto.body.putGender,
             this.ctrl.putGender
         );
 

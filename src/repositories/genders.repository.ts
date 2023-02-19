@@ -2,8 +2,12 @@ import { ENTITIES } from '@constants/entities';
 import { MongoDataBase } from '@db/database';
 import { IGender } from '@interfaces/gender.interface';
 import { ID } from '@interfaces/id.type';
+import { excludeGenderProjection } from '@interfaces/projections/gender.projection';
 import { LeanDocument, NullExpression } from 'mongoose';
 
+interface GetByName {
+    name: string;
+}
 export class GendersRepository {
     private readonly entity = ENTITIES.GENDERS;
 
@@ -20,7 +24,7 @@ export class GendersRepository {
         await this.persistence.saveMany(this.entity, data);
 
     public getGenderBy = async (
-        getBy: object
+        getBy: GetByName
     ): Promise<LeanDocument<IGender> | NullExpression> =>
         await this.persistence.getBy(this.entity, getBy);
 
@@ -30,7 +34,7 @@ export class GendersRepository {
         await this.persistence.getById(this.entity, id);
 
     public getAllGenders = async (
-        projection: object
+        projection: excludeGenderProjection
     ): Promise<LeanDocument<IGender>[] | NullExpression> =>
         await this.persistence.getAll(this.entity, projection);
 
