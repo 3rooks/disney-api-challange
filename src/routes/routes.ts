@@ -1,28 +1,19 @@
-import { AuthController } from '@controllers/auth.controller';
 import { CharacterController } from '@controllers/characters.controller';
 import { GenderController } from '@controllers/genders.controller';
 import { MovieController } from '@controllers/movies.controller';
 import { UserController } from '@controllers/users.controller';
-import { AuthDTO } from '@dtos/auth/auth.dto';
 import { CharacterDTO } from '@dtos/characters/character.dto';
 import { GenderDTO } from '@dtos/genders/gender.dto';
 import { MovieDTO } from '@dtos/movies/movie.dto';
 import { UserDTO } from '@dtos/users/user.dto';
 import { Services } from '@services/repository.service';
 import { Router } from 'express';
-import { AuthRoutes } from './auth.routes';
 import { CharacterRoutes } from './characters.routes';
 import { GenderRoutes } from './genders.routes';
 import { MovieRoutes } from './movies.routes';
 import { UserRoutes } from './users.routes';
 
 export class Routes {
-    readonly auth = new AuthRoutes(
-        Router(),
-        new AuthDTO(),
-        new AuthController(Services)
-    );
-
     readonly characters = new CharacterRoutes(
         Router(),
         new CharacterDTO(),

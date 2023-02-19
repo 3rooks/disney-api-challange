@@ -12,7 +12,11 @@ export class CharacterRoutes {
     }
 
     private init = () => {
-        this.router.get('/characters', this.ctrl.getCharacter);
+        this.router.get(
+            '/characters',
+            this.dto.queries.getByQuery,
+            this.ctrl.getCharacters
+        );
 
         this.router.get(
             '/characters/:idCharacter',

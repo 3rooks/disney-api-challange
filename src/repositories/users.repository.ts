@@ -5,7 +5,7 @@ import { IUser } from '@interfaces/user.interface';
 import { LeanDocument, NullExpression } from 'mongoose';
 
 export class UsersRepository {
-    readonly entity = ENTITIES.USERS;
+    private readonly entity = ENTITIES.USERS;
 
     constructor(private persistence: MongoDataBase) {}
 

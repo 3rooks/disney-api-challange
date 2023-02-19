@@ -5,7 +5,7 @@ import { ID } from '@interfaces/id.type';
 import { LeanDocument, NullExpression } from 'mongoose';
 
 export class GendersRepository {
-    readonly entity = ENTITIES.GENDERS;
+    private readonly entity = ENTITIES.GENDERS;
 
     constructor(private persistence: MongoDataBase) {}
 

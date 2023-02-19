@@ -1,5 +1,5 @@
 import '@config/env';
-import httpServer from '@config/http';
+import { httpServer } from '@config/http';
 import { PORT, URI } from '@constants/enviroment';
 import { Services } from '@services/repository.service';
 

@@ -4,16 +4,8 @@ import { ID } from '@interfaces/id.type';
 import { IMovie } from '@interfaces/movie.interface';
 import { LeanDocument, NullExpression } from 'mongoose';
 
-const excludeProjection = {
-    characters: 0,
-    rated: 0,
-    genders: 0,
-    updatedAt: 0,
-    createdAt: 0
-};
-
 export class MoviesRepository {
-    readonly entity = ENTITIES.MOVIES;
+    private readonly entity = ENTITIES.MOVIES;
 
     constructor(private persistence: MongoDataBase) {}
 
@@ -27,9 +19,10 @@ export class MoviesRepository {
     ): Promise<IMovie[] | NullExpression> =>
         await this.persistence.saveMany(this.entity, data);
 
-    public getAllMovies = async (): Promise<
-        LeanDocument<IMovie>[] | NullExpression
-    > => await this.persistence.getAll(this.entity, excludeProjection);
+    public getAllMovies = async (
+        projection: object
+    ): Promise<LeanDocument<IMovie>[] | NullExpression> =>
+        await this.persistence.getAll(this.entity, projection);
 
     public getMovieById = async (
         id: ID

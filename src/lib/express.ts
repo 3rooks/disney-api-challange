@@ -15,7 +15,6 @@ export class ExpressApplication {
         this.application.use(express.urlencoded({ extended: true }));
         this.application.use(express.static(PUBLIC_PATH));
 
-        this.application.use(this.base, this.routes.auth.router);
         this.application.use(this.base, this.routes.users.router);
         this.application.use(this.base, this.routes.movies.router);
         this.application.use(this.base, this.routes.genders.router);

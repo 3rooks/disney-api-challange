@@ -1,8 +1,9 @@
 import { compareHash, createHash } from '@lib/bcrypt';
+import { signAsync } from '@lib/jwt';
 import { RepositoryService } from '@services/repository.service';
 import { HandlerError } from '@utils/handler-error';
 import { ReqAuth } from '@utils/user-auth';
-import { Response } from 'express';
+import { Request, Response } from 'express';
 
 export class UserController extends HandlerError {
     private try = this.handlerError;
@@ -10,6 +11,40 @@ export class UserController extends HandlerError {
     constructor(readonly service: RepositoryService) {
         super();
     }
+
+    public login = this.try(async (req: Request, res: Response) => {
+        const { email, password } = req.body;
+
+        const user = await this.service.users.getUserBy({ email });
+
+        if (!user) return res.status(401).json({ errors: 'user unauthorized' });
+
+        const equalPassword = await compareHash(password, user);
+        if (!equalPassword)
+            return res.status(401).json({ errors: 'user unauthorized' });
+
+        const payload = { id: user._id };
+
+        const token = signAsync(payload);
+
+        return res.status(200).json({ token });
+    });
+
+    public register = this.try(async (req: Request, res: Response) => {
+        const { username, email, password } = req.body;
+
+        const existUser = await this.service.users.getUserBy({ email });
+
+        if (existUser) return res.status(409).json({ errors: 'user conflict' });
+
+        const passwordHashed = await createHash(password);
+
+        const user = { username, email, password: passwordHashed };
+
+        await this.service.users.registerUser(user);
+
+        return res.status(201).json({ results: 'user created' });
+    });
 
     public patchUsername = this.try(async (req: ReqAuth, res: Response) => {
         const { id } = req;

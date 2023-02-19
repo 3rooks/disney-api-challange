@@ -12,6 +12,13 @@ export class UserRoutes {
     }
 
     private init = () => {
+        this.router.post('/auth/login', this.dto.body.login, this.ctrl.login);
+        this.router.post(
+            '/auth/register',
+            this.dto.body.register,
+            this.ctrl.register
+        );
+
         this.router.patch(
             '/auth/username',
             this.dto.auth,

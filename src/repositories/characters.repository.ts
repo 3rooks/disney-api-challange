@@ -2,10 +2,11 @@ import { ENTITIES } from '@constants/entities';
 import { MongoDataBase } from '@db/database';
 import { ICharacter } from '@interfaces/character.interface';
 import { ID } from '@interfaces/id.type';
+import { excludeCharacterProjection } from '@interfaces/projections/character.projection';
 import { LeanDocument, NullExpression } from 'mongoose';
 
 export class CharactersRepository {
-    readonly entity = ENTITIES.CHARACTERS;
+    private readonly entity = ENTITIES.CHARACTERS;
 
     constructor(private persistence: MongoDataBase) {}
 
@@ -20,7 +21,7 @@ export class CharactersRepository {
         await this.persistence.saveMany(this.entity, data);
 
     public getAllCharacters = async (
-        projection: object
+        projection: excludeCharacterProjection
     ): Promise<LeanDocument<ICharacter>[] | NullExpression> =>
         await this.persistence.getAll(this.entity, projection);
 

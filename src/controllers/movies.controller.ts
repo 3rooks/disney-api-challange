@@ -13,7 +13,14 @@ export class MovieController extends HandlerError {
 
     public getMovies = this.try(async (req: Request, res: Response) => {
         if (Object.keys(req.query).length === 0) {
-            const results = await this.service.movies.getAllMovies();
+            const exclude = {
+                characters: 0,
+                rated: 0,
+                genders: 0,
+                updatedAt: 0,
+                createdAt: 0
+            };
+            const results = await this.service.movies.getAllMovies(exclude);
             return res.status(200).json({ results });
         }
 
