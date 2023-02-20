@@ -1,8 +1,4 @@
-import {
-    idType,
-    imageDTOSchema,
-    quantityDTOSchema
-} from '@constants/dto-types';
+import { idType, imageType, ratedType } from '@constants/dto-types';
 import { ajv } from '@lib/ajv';
 import { JSONSchemaType } from 'ajv';
 import { NextFunction, Request, Response } from 'express';
@@ -16,9 +12,9 @@ interface CharactersQuery {
 const getCharactersSchema: JSONSchemaType<CharactersQuery> = {
     type: 'object',
     properties: {
-        name: imageDTOSchema,
+        name: imageType,
         movie: idType,
-        age: quantityDTOSchema
+        age: ratedType
     },
     required: [],
     additionalProperties: false,

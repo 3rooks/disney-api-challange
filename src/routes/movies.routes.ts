@@ -12,42 +12,37 @@ export class MovieRoutes {
     }
 
     private init = () => {
-        this.router.get('/movies', this.ctrl.getMovies);
+        this.router.get('/movies', this.dto.queries, this.ctrl.getMovies);
 
         this.router.get(
             '/movies/:idMovie',
-            this.dto.params.idMovie,
+            this.dto.params,
             this.ctrl.getMovieById
         );
 
-        this.router.post(
-            '/movies',
-            this.dto.body.postMovie,
-            this.ctrl.postMovie
-        );
+        this.router.post('/movies', this.dto.postMovie, this.ctrl.postMovie);
 
         this.router.post(
             '/movies/:idMovie/character',
-            this.dto.params.idMovie,
+            this.dto.postCharacter,
             this.ctrl.postCharacter
         );
 
         this.router.put(
             '/movies/:idMovie',
-            this.dto.params.idMovie,
+            this.dto.putMovie,
             this.ctrl.putMovie
         );
 
         this.router.delete(
             '/movies/:idMovie/character/:idCharacter',
-            this.dto.params.idMovie,
-            this.dto.params.idCharacter,
+            this.dto.params,
             this.ctrl.deleteCharacter
         );
 
         this.router.delete(
             '/movies/:idMovie',
-            this.dto.params.idMovie,
+            this.dto.params,
             this.ctrl.deleteMovie
         );
     };

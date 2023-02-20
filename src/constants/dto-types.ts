@@ -12,13 +12,13 @@ export const idType = Type.String({
     }
 });
 
-export const imageDTOSchema = Type.String({
+export const imageType = Type.String({
     minLength: 10,
     maxLength: 1000,
     errorMessage: {
         type: '${0#} should be a string',
         format: '${0#} should be a string',
-        minLength: '${0#} must have at least 100 letters',
+        minLength: '${0#} must have at least 10 letters',
         maxLength: '${0#} must have a maximum of 1000 letters'
     }
 });
@@ -62,14 +62,25 @@ export const passwordType = Type.String({
  * Product types
  */
 
-export const titleDTOSchema = Type.String({
-    minLength: 5,
+export const titleType = Type.String({
+    minLength: 2,
     maxLength: 50,
     errorMessage: {
         type: '${0#} must be a string',
         format: '${0#} should be a string',
-        minLength: '${0#} must have at least 5 letters',
+        minLength: '${0#} must have at least 2 letters',
         maxLength: '${0#} must have a maximum of 50 letters'
+    }
+});
+
+export const orderType = Type.String({
+    minLength: 3,
+    maxLength: 4,
+    errorMessage: {
+        type: '${0#} must be a string',
+        format: '${0#} should be a string',
+        minLength: '${0#} must have at least 3 letters',
+        maxLength: '${0#} must have a maximum of 4 letters'
     }
 });
 
@@ -128,14 +139,25 @@ export const producerDTOSchema = Type.String({
     }
 });
 
-export const releaseYearDTOSchema = Type.Number({
-    minimum: 1700,
+export const releaseYearType = Type.Integer({
+    minimum: 1895,
     maximum: 2050,
     errorMessage: {
-        type: '${0#} should be a number',
+        type: '${0#} should be a integer number',
         format: '${0#} should be a YYYY',
-        minimum: '${0#} should be above 1700',
+        minimum: '${0#} should be above 1895',
         maximum: '${0#} should be below 2050'
+    }
+});
+
+export const ratedType = Type.Integer({
+    minimum: 1,
+    maximum: 10,
+    errorMessage: {
+        type: '${0#} should be a integer number',
+        format: '${0#} should be a integer number',
+        minimum: '${0#} should be above 0',
+        maximum: '${0#} should be below 10'
     }
 });
 

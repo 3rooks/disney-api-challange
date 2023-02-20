@@ -1,4 +1,4 @@
-export const ORDERS = {
-    ASC: 1,
-    DESC: -1
+export const ORDER = {
+    ASC: { releaseYear: 1 },
+    DESC: { releaseYear: -1 }
 };
