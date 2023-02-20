@@ -1,40 +1,40 @@
 import {
     ageType,
+    historyType,
     idType,
     imageType,
-    releaseYearType,
     titleType
 } from '@constants/dto-types';
-import { IMovie } from '@interfaces/movie.interface';
+import { ICharacter } from '@interfaces/character.interface';
 import { ajv } from '@lib/ajv';
 import { JSONSchemaType } from 'ajv';
 import { NextFunction, Request, Response } from 'express';
 
-type Movie = Omit<IMovie, '_id' | 'characters' | 'createdAt' | 'updatedAt'>;
+type Character = Omit<ICharacter, '_id' | 'movies' | 'createdAt' | 'updatedAt'>;
 
-interface PutMovie extends Movie {
-    idMovie: string;
+interface PutCharacter extends Character {
+    idCharacter: string;
 }
 
-const putMovieSchema: JSONSchemaType<PutMovie> = {
+const putCharacterSchema: JSONSchemaType<PutCharacter> = {
     type: 'object',
     properties: {
-        idMovie: idType,
-        title: titleType,
+        idCharacter: idType,
+        name: titleType,
         image: imageType,
-        rated: ageType,
-        releaseYear: releaseYearType
+        age: ageType,
+        history: historyType
     },
-    required: ['idMovie', 'title', 'image', 'rated', 'releaseYear'],
+    required: ['idCharacter', 'name', 'image', 'age', 'history'],
     additionalProperties: false,
     errorMessage: {
         additionalProperties: 'Invalid JSON Schema'
     }
 };
 
-const validateSchema = ajv.compile(putMovieSchema);
+const validateSchema = ajv.compile(putCharacterSchema);
 
-export const putMovieDTO = (
+export const putCharacterDTO = (
     req: Request,
     res: Response,
     next: NextFunction
@@ -46,18 +46,18 @@ export const putMovieDTO = (
             errors: validateSchema.errors?.map((error) => error.message)
         });
 
-    const { idMovie } = req.params;
-    const { title, image, rated, releaseYear } = req.body;
+    const { idCharacter } = req.params;
+    const { name, image, age, history } = req.body;
 
     req.params = {
-        idMovie
+        idCharacter
     };
 
     req.body = {
-        title: String(title),
+        name: String(name),
         image: String(image),
-        rated: Number(rated),
-        releaseYear: Number(releaseYear)
+        age: Number(age),
+        history: String(history)
     };
 
     return next();

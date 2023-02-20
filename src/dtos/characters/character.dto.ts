@@ -1,26 +1,13 @@
-import { idCharacterDTOParams } from '@dtos/params/id-character.dto';
-import { idMovieDTOParams } from '@dtos/params/id-movie.dto';
-import { getCharacterDTOQueries } from '@dtos/queries/get-characters.dto';
-import { validateDTOSchema } from '@utils/dto-schema-validator';
-import { postCharacterSchemaDTO } from './post-character.dto';
-import { postMovieSchemaDTO } from './post-movie.dto';
-
-const postCharacterDTOBody = validateDTOSchema(postCharacterSchemaDTO);
-const postMovieDTOBody = validateDTOSchema(postMovieSchemaDTO);
+import { getByParamsDTO } from '@dtos/params/get-by-params.dto';
+import { getCharacterDTO } from '@dtos/queries/get-characters.dto';
+import { postCharacterDTO } from './post-character.dto';
+import { postMovieDTO } from './post-movie.dto';
+import { putCharacterDTO } from './put-character.dto';
 
 export class CharacterDTO {
-    readonly queries = {
-        getByQuery: getCharacterDTOQueries
-    };
-
-    readonly params = {
-        idCharacter: idCharacterDTOParams,
-        idMovie: idMovieDTOParams
-    };
-
-    readonly body = {
-        postMovie: postMovieDTOBody,
-        postCharacter: postCharacterDTOBody,
-        putCharacter: postCharacterDTOBody
-    };
+    readonly queries = getCharacterDTO;
+    readonly params = getByParamsDTO;
+    readonly postCharacter = postCharacterDTO;
+    readonly postMovie = postMovieDTO;
+    readonly putCharacter = putCharacterDTO;
 }

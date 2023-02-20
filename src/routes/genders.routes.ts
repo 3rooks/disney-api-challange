@@ -29,7 +29,6 @@ export class GenderRoutes {
         this.router.post(
             '/genders/:idGender/movie',
             this.dto.params.idGender,
-            this.dto.body.postMovie,
             this.ctrl.postMovie
         );
 

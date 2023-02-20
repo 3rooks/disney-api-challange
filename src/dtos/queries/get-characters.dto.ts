@@ -1,4 +1,4 @@
-import { idType, imageType, ratedType } from '@constants/dto-types';
+import { ageType, idType, titleType } from '@constants/dto-types';
 import { ajv } from '@lib/ajv';
 import { JSONSchemaType } from 'ajv';
 import { NextFunction, Request, Response } from 'express';
@@ -12,9 +12,9 @@ interface CharactersQuery {
 const getCharactersSchema: JSONSchemaType<CharactersQuery> = {
     type: 'object',
     properties: {
-        name: imageType,
+        name: titleType,
         movie: idType,
-        age: ratedType
+        age: ageType
     },
     required: [],
     additionalProperties: false,
@@ -23,28 +23,36 @@ const getCharactersSchema: JSONSchemaType<CharactersQuery> = {
     }
 };
 
-export const getCharactersSchemaDTO = ajv.compile(getCharactersSchema);
+export const validateSchema = ajv.compile(getCharactersSchema);
 
-export const getCharacterDTOQueries = (
+export const getCharacterDTO = (
     req: Request,
     res: Response,
     next: NextFunction
 ) => {
-    const { name, movie, age: ageString } = req.query;
-    const age = Number(ageString);
+    const { name, movie, age } = req.query;
 
-    let isValid;
-
-    if (!ageString && Number.isNaN(age)) {
-        isValid = getCharactersSchemaDTO({ name, movie });
-    } else {
-        isValid = getCharactersSchemaDTO({ name, movie, age });
-    }
+    const isValid = validateSchema({
+        ...req.query,
+        age: !age
+            ? undefined
+            : Number.isNaN(Number(age))
+            ? String(age)
+            : Number(age)
+    });
 
     if (!isValid)
         return res.status(400).json({
-            errors: getCharactersSchemaDTO.errors?.map((error) => error.message)
+            errors: validateSchema.errors?.map((error) => error.message)
         });
+
+    req.query = {};
+
+    req.body = {
+        name: name ? String(name) : undefined,
+        movie: movie ? String(movie) : undefined,
+        age: !Number.isNaN(Number(age)) ? Number(age) : undefined
+    };
 
     return next();
 };

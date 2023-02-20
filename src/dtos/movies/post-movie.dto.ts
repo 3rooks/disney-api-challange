@@ -1,4 +1,4 @@
-import { ratedType, releaseYearType, usernameType } from '@constants/dto-types';
+import { ageType, releaseYearType, usernameType } from '@constants/dto-types';
 import { IMovie } from '@interfaces/movie.interface';
 import { ajv } from '@lib/ajv';
 import { JSONSchemaType } from 'ajv';
@@ -11,7 +11,7 @@ const postMovieSchema: JSONSchemaType<Movie> = {
     properties: {
         title: usernameType,
         image: usernameType,
-        rated: ratedType,
+        rated: ageType,
         releaseYear: releaseYearType
     },
     required: ['title', 'image', 'rated', 'releaseYear'],

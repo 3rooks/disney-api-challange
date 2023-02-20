@@ -106,13 +106,13 @@ export const originalTitleRomanisedDTOSchema = Type.String({
     }
 });
 
-export const descriptionDTOSchema = Type.String({
+export const historyType = Type.String({
     minLength: 10,
     maxLength: 1000,
     errorMessage: {
         type: '${0#} should be a string',
         format: '${0#} should be a string',
-        minLength: '${0#} must have at least 100 letters',
+        minLength: '${0#} must have at least 10 letters',
         maxLength: '${0#} must have a maximum of 1000 letters'
     }
 });
@@ -158,6 +158,17 @@ export const ratedType = Type.Integer({
         format: '${0#} should be a integer number',
         minimum: '${0#} should be above 0',
         maximum: '${0#} should be below 10'
+    }
+});
+
+export const ageType = Type.Integer({
+    minimum: 1,
+    maximum: 100,
+    errorMessage: {
+        type: '${0#} should be a integer number',
+        format: '${0#} should be a integer number',
+        minimum: '${0#} should be above 0',
+        maximum: '${0#} should be below 100'
     }
 });
 

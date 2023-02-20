@@ -14,46 +14,43 @@ export class CharacterRoutes {
     private init = () => {
         this.router.get(
             '/characters',
-            this.dto.queries.getByQuery,
+            this.dto.queries,
             this.ctrl.getCharacters
         );
 
         this.router.get(
             '/characters/:idCharacter',
-            this.dto.params.idCharacter,
+            this.dto.params,
             this.ctrl.getCharacterById
         );
 
         this.router.post(
             '/characters',
-            this.dto.body.postCharacter,
+            this.dto.postCharacter,
             this.ctrl.postCharacter
         );
 
         this.router.post(
             '/characters/:idCharacter/movie',
-            this.dto.params.idCharacter,
-            this.dto.body.postMovie,
+            this.dto.postMovie,
             this.ctrl.postMovie
         );
 
         this.router.put(
             '/characters/:idCharacter',
-            this.dto.params.idCharacter,
-            this.dto.body.putCharacter,
+            this.dto.putCharacter,
             this.ctrl.putCharacter
         );
 
         this.router.delete(
             '/characters/:idCharacter/movie/:idMovie',
-            this.dto.params.idCharacter,
-            this.dto.params.idMovie,
+            this.dto.params,
             this.ctrl.deleteMovie
         );
 
         this.router.delete(
             '/characters/:idCharacter',
-            this.dto.params.idCharacter,
+            this.dto.params,
             this.ctrl.deleteCharacter
         );
     };
