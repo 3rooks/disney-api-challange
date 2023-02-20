@@ -16,39 +16,33 @@ export class GenderRoutes {
 
         this.router.get(
             '/genders/:idGender',
-            this.dto.params.idGender,
+            this.dto.params,
             this.ctrl.getGenderById
         );
 
-        this.router.post(
-            '/genders',
-            this.dto.body.postGender,
-            this.ctrl.postGender
-        );
+        this.router.post('/genders', this.dto.postGender, this.ctrl.postGender);
 
         this.router.post(
             '/genders/:idGender/movie',
-            this.dto.params.idGender,
+            this.dto.postMovie,
             this.ctrl.postMovie
         );
 
         this.router.put(
             '/genders/:idGender',
-            this.dto.params.idGender,
-            this.dto.body.putGender,
+            this.dto.putGender,
             this.ctrl.putGender
         );
 
         this.router.delete(
             '/genders/:idGender/movie/:idMovie',
-            this.dto.params.idGender,
-            this.dto.params.idMovie,
+            this.dto.params,
             this.ctrl.deleteMovie
         );
 
         this.router.delete(
             '/genders/:idGender',
-            this.dto.params.idGender,
+            this.dto.params,
             this.ctrl.deleteGender
         );
     };

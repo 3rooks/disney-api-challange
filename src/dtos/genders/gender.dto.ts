@@ -1,18 +1,11 @@
-import { idGenderDTOParams } from '@dtos/params/id-gender.dto';
-import { idMovieDTOParams } from '@dtos/params/id-movie.dto';
-import { validateDTOSchema } from '@utils/dto-schema-validator';
-import { postGenderSchemaDTO } from './post-gender.dto';
-
-const postGenderDTOBody = validateDTOSchema(postGenderSchemaDTO);
+import { getByParamsDTO } from '@dtos/params/get-by-params.dto';
+import { postGenderDTO } from './post-gender.dto';
+import { postMovieDTO } from './post-movie.dto';
+import { putGenderDTO } from './put-gender.dto';
 
 export class GenderDTO {
-    readonly params = {
-        idGender: idGenderDTOParams,
-        idMovie: idMovieDTOParams
-    };
-
-    readonly body = {
-        postGender: postGenderDTOBody,
-        putGender: postGenderDTOBody
-    };
+    readonly params = getByParamsDTO;
+    readonly postGender = postGenderDTO;
+    readonly postMovie = postMovieDTO;
+    readonly putGender = putGenderDTO;
 }
