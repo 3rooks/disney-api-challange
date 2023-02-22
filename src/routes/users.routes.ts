@@ -12,38 +12,38 @@ export class UserRoutes {
     }
 
     private init = () => {
-        this.router.post('/auth/login', this.dto.body.login, this.ctrl.login);
+        this.router.post('/auth/login', this.dto.login, this.ctrl.login);
         this.router.post(
             '/auth/register',
-            this.dto.body.register,
+            this.dto.register,
             this.ctrl.register
         );
 
         this.router.patch(
             '/auth/username',
             this.dto.auth,
-            this.dto.body.patchUsername,
+            this.dto.patchUsername,
             this.ctrl.patchUsername
         );
 
         this.router.patch(
             '/auth/email',
             this.dto.auth,
-            this.dto.body.patchEmail,
+            this.dto.patchEmail,
             this.ctrl.patchEmail
         );
 
         this.router.patch(
             '/auth/password',
             this.dto.auth,
-            this.dto.body.patchPassword,
+            this.dto.patchPassword,
             this.ctrl.patchPassword
         );
 
         this.router.delete(
             '/auth/unregister',
             this.dto.auth,
-            this.dto.body.deleteUser,
+            this.dto.deleteUser,
             this.ctrl.deleteUser
         );
     };
