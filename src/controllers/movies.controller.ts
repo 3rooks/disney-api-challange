@@ -29,13 +29,15 @@ export class MovieController extends HandlerError {
             if (order === Object.keys(ORDER)[0]) {
                 return res.status(200).json({
                     results: await this.service.movies.getMoviesSorted(
-                        ORDER.ASC
+                        ORDER.ASC,
+                        movieProjection
                     )
                 });
             } else if (order === Object.keys(ORDER)[1]) {
                 return res.status(200).json({
                     results: await this.service.movies.getMoviesSorted(
-                        ORDER.DESC
+                        ORDER.DESC,
+                        movieProjection
                     )
                 });
             } else return badRequest(res, 'ASC|DESC');

@@ -26,7 +26,8 @@ module.exports = {
                     '@routes': './src/routes',
                     '@schemas': './srcschemas',
                     '@services': './src/services',
-                    '@utils': './src/utils'
+                    '@utils': './src/utils',
+                    '@docs': './src/docs'
                 }
             }
         ]

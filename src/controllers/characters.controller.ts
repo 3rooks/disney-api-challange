@@ -26,7 +26,7 @@ export class CharacterController extends HandlerError {
                         name
                     }
                 );
-                if (!results)
+                if (results?.length === 0)
                     return res
                         .status(404)
                         .json({ errors: 'character not found' });
@@ -37,7 +37,7 @@ export class CharacterController extends HandlerError {
                         age
                     }
                 );
-                if (!results)
+                if (results?.length === 0)
                     return res
                         .status(404)
                         .json({ errors: 'character not found' });

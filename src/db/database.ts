@@ -55,6 +55,12 @@ export class MongoDataBase {
     public getAllBy = async (entity: string, data: object) =>
         await this.entities[entity].aggregate([{ $match: data }]).exec();
 
-    public getAllSorted = async (entity: string, sort: any) =>
-        await this.entities[entity].aggregate([{ $sort: sort }]).exec();
+    public getAllSorted = async (
+        entity: string,
+        sort: any,
+        projection: object
+    ) =>
+        await this.entities[entity]
+            .aggregate([{ $sort: sort }, { $project: projection }])
+            .exec();
 }

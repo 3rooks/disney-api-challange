@@ -10,6 +10,19 @@ export class UserController extends HandlerError {
     constructor(readonly service: RepositoryService) {
         super();
     }
+    public register = this.try(async (req: Register, res: Response) => {
+        const { email, password } = req.body;
+
+        const existUser = await this.service.users.getUserBy({ email });
+        if (existUser) return res.status(409).json({ errors: 'user conflict' });
+
+        await this.service.users.registerUser({
+            ...req.body,
+            password: await createHash(password)
+        });
+
+        return res.status(201).json({ results: 'user created' });
+    });
 
     public login = this.try(async (req: Login, res: Response) => {
         const { email, password } = req.body;
@@ -25,20 +38,6 @@ export class UserController extends HandlerError {
         const token = signAsync(payload);
 
         return res.status(200).json({ token });
-    });
-
-    public register = this.try(async (req: Register, res: Response) => {
-        const { email, password } = req.body;
-
-        const existUser = await this.service.users.getUserBy({ email });
-        if (existUser) return res.status(409).json({ errors: 'user conflict' });
-
-        await this.service.users.registerUser({
-            ...req.body,
-            password: await createHash(password)
-        });
-
-        return res.status(201).json({ results: 'user created' });
     });
 
     public patchUsername = this.try(

@@ -1,0 +1,1997 @@
+{
+    "openapi": "3.0.0",
+    "info": { "title": "Endpoints Documentation", "version": "1.0.0" },
+    "paths": {
+        "_Movies": "movies",
+        "/api/v1/movies": {
+            "post": {
+                "summary": "Post movie into application",
+                "tags": ["Movies"],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "$ref": "#/components/requestBodies/PostMovie"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "post movie",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "$ref": "#/components/responseBodies/PostMovie"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Errors (Bad request)",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "$ref": "#/components/responseErrorBodies/WrongFields"
+                                }
+                            }
+                        }
+                    },
+                    "409": {
+                        "description": "movie conflic",
+                        "content": {
+                            "application/json": {
+                                "type": "object",
+                                "$ref": "#/components/responseErrorBodies/MovieConflict"
+                            }
+                        }
+                    }
+                }
+            },
+            "get": {
+                "summary": "Returns all movies",
+                "tags": ["Movies"],
+                "responses": {
+                    "200": {
+                        "description": "OK (Movies)",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "$ref": "#/components/responseBodies/GetAllMovies"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/movies?title={title}": {
+            "get": {
+                "summary": "Returns movie by title",
+                "tags": ["Movies"],
+                "parameters": [
+                    {
+                        "name": "title",
+                        "in": "path",
+                        "description": "Movie title",
+                        "required": true,
+                        "type": "String"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK (Get movie by title)",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "$ref": "#/components/responseBodies/GetMovieBy"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Errors (Bad request)",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "$ref": "#/components/responseErrorBodies/WrongFields"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Movie not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "$ref": "#/components/responseErrorBodies/MovieNotFound"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/movies?order={order}": {
+            "get": {
+                "summary": "Returns movies by order (ASC | DESC)",
+                "tags": ["Movies"],
+                "parameters": [
+                    {
+                        "name": "order",
+                        "in": "path",
+                        "description": "ASC | DESC",
+                        "required": true,
+                        "type": "String"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK (Ordered by 'ReleaseYear')",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "$ref": "#/components/responseBodies/GetAllMovies"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request (Only ASC | DESC)",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "$ref": "#/components/responseErrorBodies/OrderNotFound"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/movies?gender={gender}": {
+            "get": {
+                "summary": "Returns the movies of a gender",
+                "tags": ["Movies"],
+                "parameters": [
+                    {
+                        "name": "gender",
+                        "in": "path",
+                        "description": "gender (uuidv4)",
+                        "required": true,
+                        "type": "String"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK (movies of a gender)",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "$ref": "#/components/responseBodies/GetMovies"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Errors (Bad request)",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "$ref": "#/components/responseErrorBodies/WrongFields"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Gender not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "$ref": "#/components/responseErrorBodies/GenderNotFound"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/movies/{movieId}": {
+            "get": {
+                "summary": "Return movie by ID",
+                "tags": ["Movies"],
+                "parameters": [
+                    {
+                        "name": "movieId",
+                        "in": "path",
+                        "required": true,
+                        "description": "ID movie (uuidV4)",
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "get movie by id",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "$ref": "#/components/responseBodies/GetMovieBy"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid Params Fields - Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "$ref": "#/components/responseErrorBodies/WrongFields"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Movie not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "$ref": "#/components/responseErrorBodies/MovieNotFound"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "summary": "put movie",
+                "tags": ["Movies"],
+                "parameters": [
+                    {
+                        "name": "movieId",
+                        "in": "path",
+                        "required": true,
+                        "description": "ID movie (uuidV4)",
+                        "type": "string"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "$ref": "#/components/requestBodies/PostMovie"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "put movie",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "$ref": "#/components/responseBodies/DeleteMovie"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Errors (Bad request)",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "$ref": "#/components/responseErrorBodies/WrongFields"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "character | movie not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "$ref": "#/components/responseErrorBodies/BothNotFound"
+                                }
+                            }
+                        }
+                    },
+                    "409": {
+                        "description": "character conflict",
+                        "content": {
+                            "application/json": {
+                                "type": "object",
+                                "$ref": "#/components/responseErrorBodies/CharacterConflict"
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "summary": "delete movie",
+                "tags": ["Movies"],
+                "parameters": [
+                    {
+                        "name": "movieId",
+                        "in": "path",
+                        "required": true,
+                        "description": "ID movie (uuidV4)",
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "delete movie",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "$ref": "#/components/responseBodies/DeleteMovie"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Errors (Bad request)",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "$ref": "#/components/responseErrorBodies/WrongFields"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Movie not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "$ref": "#/components/responseErrorBodies/MovieNotFound"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/movies/{movieId}/character": {
+            "post": {
+                "summary": "post character into movie",
+                "tags": ["Movies"],
+                "parameters": [
+                    {
+                        "name": "movieId",
+                        "in": "path",
+                        "required": true,
+                        "description": "ID movie (uuidV4)",
+                        "type": "string"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "$ref": "#/components/requestBodies/PostCharacterInMovie"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "post character in movie",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "$ref": "#/components/responseBodies/PostMovie"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/movies/{movieId}/character/{characterId}": {
+            "delete": {
+                "summary": "delete character from movie",
+                "tags": ["Movies"],
+                "parameters": [
+                    {
+                        "name": "movieId",
+                        "in": "path",
+                        "required": true,
+                        "description": "ID movie (uuidV4)",
+                        "type": "string"
+                    },
+                    {
+                        "name": "characterId",
+                        "in": "path",
+                        "required": true,
+                        "description": "ID character (uuidv4)",
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "delete character",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "$ref": "#/components/responseBodies/DeleteCharacter"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Errors (Bad request)",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "$ref": "#/components/responseErrorBodies/WrongFields"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "character | movie not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "$ref": "#/components/responseErrorBodies/BothNotFound"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "_Characters": "character",
+        "/api/v1/characters": {
+            "post": {
+                "summary": "post character",
+                "tags": ["Characters"],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "$ref": "#/components/requestBodies/PostCharacter"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "post character",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "$ref": "#/components/responseBodies/PostCharacter"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Errors (Bad request)",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "$ref": "#/components/responseErrorBodies/WrongFields"
+                                }
+                            }
+                        }
+                    },
+                    "409": {
+                        "description": "character conflict",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "$ref": "#/components/responseErrorBodies/CharacterConflict"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "get": {
+                "summary": "Get all character",
+                "tags": ["Characters"],
+                "responses": {
+                    "200": {
+                        "description": "all character (OK)",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "$ref": "#/components/responseBodies/GetAllCharacters"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/characters?name={name}": {
+            "get": {
+                "summary": "Get character by name",
+                "tags": ["Characters"],
+                "parameters": [
+                    {
+                        "name": "name",
+                        "in": "path",
+                        "description": "Character name",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK (Get character by name)",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "$ref": "#/components/responseBodies/GetCharacterBy"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Character not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "$ref": "#/components/responseErrorBodies/CharacterNotFound"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/characters?movie={movieId}": {
+            "get": {
+                "summary": "Get characters from movie",
+                "tags": ["Characters"],
+                "parameters": [
+                    {
+                        "name": "movieId",
+                        "in": "path",
+                        "description": "ID movie (uuidV4)",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "ok get characters from movie",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "$ref": "#/components/responseBodies/GetCharactersFromMovie"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Errors (Bad request)",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "$ref": "#/components/responseErrorBodies/WrongFields"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "movie not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "$ref": "#/components/responseErrorBodies/MovieNotFound"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/characters?age={age}": {
+            "get": {
+                "summary": "Get by age",
+                "tags": ["Characters"],
+                "parameters": [
+                    {
+                        "name": "movieId",
+                        "in": "path",
+                        "description": "ID movie (uuidV4)",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "get characters by age",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "$ref": "#/components/responseBodies/GetCharacterBy"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Errors (Bad request)",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "$ref": "#/components/responseErrorBodies/WrongFields"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Character not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "$ref": "#/components/responseErrorBodies/CharacterNotFound"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/characters/{characterId}": {
+            "get": {
+                "summary": "get character by id",
+                "tags": ["Characters"],
+                "parameters": [
+                    {
+                        "name": "characterId",
+                        "in": "path",
+                        "description": "ID character (uuidv4)",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "get character by id",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "$ref": "#/components/responseBodies/GetCharacterById"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Errors (Bad request)",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "$ref": "#/components/responseErrorBodies/WrongFields"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Character not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "$ref": "#/components/responseErrorBodies/CharacterNotFound"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "summary": "update character by id",
+                "tags": ["Characters"],
+                "parameters": [
+                    {
+                        "name": "characterId",
+                        "in": "path",
+                        "description": "ID character (uuidv4)",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "$ref": "#/components/requestBodies/PostCharacter"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "get character by id",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "$ref": "#/components/responseBodies/UpdateCharacter"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Errors (Bad request)",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "$ref": "#/components/responseErrorBodies/WrongFields"
+                                }
+                            }
+                        }
+                    },
+                    "409": {
+                        "description": "character conflict",
+                        "content": {
+                            "application/json": {
+                                "schema": "object",
+                                "$ref": "#/components/responseErrorBodies/CharacterConflict"
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "summary": "delete character by id",
+                "tags": ["Characters"],
+                "parameters": [
+                    {
+                        "name": "characterId",
+                        "in": "path",
+                        "description": "ID character (uuidv4)",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "delete character by id",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "$ref": "#/components/responseBodies/DeleteMovie"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Errors (Bad request)",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "$ref": "#/components/responseErrorBodies/WrongFields"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "character | movie not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "$ref": "#/components/responseErrorBodies/BothNotFound"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/characters/{characterId}/movie": {
+            "post": {
+                "summary": "post movie into character",
+                "tags": ["Characters"],
+                "parameters": [
+                    {
+                        "name": "characterId",
+                        "in": "path",
+                        "description": "ID character (uuidv4)",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "$ref": "#/components/requestBodies/PostMovieInCharacter"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "post movie in character",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "$ref": "#/components/responseBodies/UpdateCharacter"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Errors (Bad request)",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "$ref": "#/components/responseErrorBodies/WrongFields"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "character | movie not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "$ref": "#/components/responseErrorBodies/BothNotFound"
+                                }
+                            }
+                        }
+                    },
+                    "409": {
+                        "description": "movie conflict",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "$ref": "#/components/responseErrorBodies/MovieConflict"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/characters/{characterId}/movie/{movieId}": {
+            "delete": {
+                "summary": "delete movie from character",
+                "tags": ["Characters"],
+                "parameters": [
+                    {
+                        "name": "characterId",
+                        "in": "path",
+                        "description": "ID character (uuidv4)",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "movieId",
+                        "in": "path",
+                        "description": "ID movie (uuidV4)",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "delete movie in character",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "$ref": "#/components/responseBodies/DeleteMovie"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Errors (Bad request)",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "$ref": "#/components/responseErrorBodies/WrongFields"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "character | movie not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "$ref": "#/components/responseErrorBodies/BothNotFound"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "_Genders": "gender",
+        "/api/v1/genders": {
+            "post": {
+                "summary": "post gender",
+                "tags": ["Genders"],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "$ref": "#/components/requestBodies/PostGender"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "gender created",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "$ref": "#/components/responseBodies/PostGender"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Errors (Bad request)",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "$ref": "#/components/responseErrorBodies/WrongFields"
+                                }
+                            }
+                        }
+                    },
+                    "409": {
+                        "description": "gender conflict",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "$ref": "#/components/responseErrorBodies/GenderConflict"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "get": {
+                "summary": "get all genders",
+                "tags": ["Genders"],
+                "responses": {
+                    "200": {
+                        "description": "get all genders",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "$ref": "#/components/responseBodies/GetAllGenders"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/genders/{genderId}": {
+            "get": {
+                "summary": "get gender by id",
+                "tags": ["Genders"],
+                "parameters": [
+                    {
+                        "name": "genderId",
+                        "in": "path",
+                        "description": "ID gender (uuidv4)",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "get gender by id",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "$ref": "#/components/responseBodies/GetGenderBy"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Errors (Bad request)",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "$ref": "#/components/responseErrorBodies/WrongFields"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Gender not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "$ref": "#/components/responseErrorBodies/GenderNotFound"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "summary": "edit gender",
+                "tags": ["Genders"],
+                "parameters": [
+                    {
+                        "name": "genderId",
+                        "in": "path",
+                        "description": "ID gender (uuidv4)",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "updated gender",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "$ref": "#/components/responseBodies/UpdateGender"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Errors (Bad request)",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "$ref": "#/components/responseErrorBodies/WrongFields"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Gender not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "$ref": "#/components/responseErrorBodies/GenderNotFound"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "summary": "delete gender",
+                "tags": ["Genders"],
+                "parameters": [
+                    {
+                        "name": "genderId",
+                        "in": "path",
+                        "description": "ID gender (uuidv4)",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "delete gender",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "$ref": "#/components/responseBodies/DeleteGender"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Errors (Bad request)",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "$ref": "#/components/responseErrorBodies/WrongFields"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Gender not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "$ref": "#/components/responseErrorBodies/GenderNotFound"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/genders/{genderId}/movie": {
+            "post": {
+                "summary": "post movie into gender",
+                "tags": ["Genders"],
+                "parameters": [
+                    {
+                        "name": "genderId",
+                        "in": "path",
+                        "description": "ID gender (uuidv4)",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "$ref": "#/components/requestBodies/PostMovieInGender"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "post movie in gender",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "$ref": "#/components/responseBodies/UpdateGender"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Errors (Bad request)",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "$ref": "#/components/responseErrorBodies/WrongFields"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Gender | Movie not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "$ref": "#/components/responseErrorBodies/BothNotFound"
+                                }
+                            }
+                        }
+                    },
+                    "409": {
+                        "description": "movie conflict",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "$ref": "#/components/responseErrorBodies/MovieConflict"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/genders/{genderId}/movie/{movieId}": {
+            "delete": {
+                "summary": "delete movie into gender",
+                "tags": ["Genders"],
+                "parameters": [
+                    {
+                        "name": "genderId",
+                        "in": "path",
+                        "description": "ID gender (uuidv4)",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "movieId",
+                        "in": "path",
+                        "description": "ID movie (uuidV4)",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "post movie in gender",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "$ref": "#/components/responseBodies/DeleteMovie"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Errors (Bad request)",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "$ref": "#/components/responseErrorBodies/WrongFields"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Gender | Movie not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "$ref": "#/components/responseErrorBodies/BothNotFound"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "_Users": "user",
+        "/api/v1/auth/register": {
+            "post": {
+                "summary": "Register a user in the application",
+                "tags": ["Users"],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "$ref": "#/components/requestBodies/RegisterUser"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "OK (user created)",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "$ref": "#/components/responseBodies/UserCreated"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid Body Fields - Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "$ref": "#/components/responseErrorBodies/WrongFields"
+                                }
+                            }
+                        }
+                    },
+                    "409": {
+                        "description": "User already exists in the application - Conflict",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "$ref": "#/components/responseErrorBodies/UserConflic"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/auth/login": {
+            "post": {
+                "summary": "Login to a user in the application",
+                "tags": ["Users"],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/requestBodies/LoginUser"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK (user logged)",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "$ref": "#/components/responseBodies/LoginToken"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid Body Fields - Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "$ref": "#/components/responseErrorBodies/WrongFields"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Invalid Credentials | Token - Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "$ref": "#/components/responseErrorBodies/Unauthorized"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/auth/username": {
+            "patch": {
+                "summary": "Update a user's username",
+                "tags": ["Users"],
+                "security": [{ "bearerAuth": [] }],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/requestBodies/UpdateUsername"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "202": {
+                        "description": "OK (updated user username)",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "$ref": "#/components/responseBodies/UserUpdate"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid Body Fields - Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "$ref": "#/components/responseErrorBodies/WrongFields"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Invalid Credentials | Token - Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "$ref": "#/components/responseErrorBodies/Unauthorized"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/auth/email": {
+            "patch": {
+                "summary": "Update a user's email address",
+                "tags": ["Users"],
+                "security": [{ "bearerAuth": [] }],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/requestBodies/UpdateEmail"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "202": {
+                        "description": "OK (updated user email)",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "$ref": "#/components/responseBodies/UserUpdate"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid Body Fields - Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "$ref": "#/components/responseErrorBodies/WrongFields"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Invalid Credentials | Token - Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "$ref": "#/components/responseErrorBodies/Unauthorized"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/auth/password": {
+            "patch": {
+                "summary": "Update a user's password",
+                "tags": ["Users"],
+                "security": [{ "bearerAuth": [] }],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/requestBodies/UpdatePassword"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "202": {
+                        "description": "OK (updated user password)",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "$ref": "#/components/responseBodies/UserUpdate"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid Body Fields - Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "$ref": "#/components/responseErrorBodies/WrongFields"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Invalid Credentials | Token - Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "$ref": "#/components/responseErrorBodies/Unauthorized"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/auth/unregister": {
+            "delete": {
+                "summary": "Removes a user from the application",
+                "tags": ["Users"],
+                "security": [{ "bearerAuth": [] }],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/requestBodies/Unregister"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK (user deleted)",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "$ref": "#/components/responseBodies/UserDeleted"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid Body Fields - Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "$ref": "#/components/responseErrorBodies/WrongFields"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Invalid Credentials | Token - Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "$ref": "#/components/responseErrorBodies/Unauthorized"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "scheme": "bearer",
+                "bearerFormat": "JWT"
+            }
+        },
+        "requestBodies": {
+            "RegisterUser": {
+                "type": "object",
+                "example": {
+                    "username": "whoami",
+                    "email": "email@email.com",
+                    "password": "MyPass123"
+                }
+            },
+            "LoginUser": {
+                "type": "object",
+                "example": {
+                    "email": "email@email.com",
+                    "password": "MyPass123"
+                }
+            },
+            "UpdateUsername": {
+                "type": "object",
+                "example": { "username": "newUsername" }
+            },
+            "UpdateEmail": {
+                "type": "object",
+                "example": { "email": "new@email.com" }
+            },
+            "UpdatePassword": {
+                "type": "object",
+                "example": {
+                    "oldPassword": "OldPassword",
+                    "newPassword": "NewPassword"
+                }
+            },
+            "Unregister": {
+                "type": "object",
+                "example": { "password": "CurrentPassword" }
+            },
+            "PostMovie": {
+                "type": "object",
+                "example": {
+                    "title": "movieTitle",
+                    "image": "imageimage",
+                    "rated": 5,
+                    "releaseYear": 2000
+                }
+            },
+            "PostCharacterInMovie": {
+                "type": "object",
+                "example": {
+                    "character": "characterId"
+                }
+            },
+            "PostMovieInCharacter": {
+                "type": "object",
+                "example": {
+                    "movie": "movieId"
+                }
+            },
+            "PostCharacter": {
+                "type": "object",
+                "example": {
+                    "name": "nameCharacter",
+                    "image": "imageCharacter",
+                    "age": 35,
+                    "history": "historyCharacter"
+                }
+            },
+            "PostGender": {
+                "type": "object",
+                "example": {
+                    "name": "nameGender",
+                    "image": "imageGender"
+                }
+            },
+            "PostMovieInGender": {
+                "type": "object",
+                "example": {
+                    "movie": "movieId"
+                }
+            }
+        },
+        "responseBodies": {
+            "GetAllMovies": {
+                "type": "object",
+                "example": {
+                    "results": [
+                        {
+                            "_id": "(uuidv4)",
+                            "title": "titleMovie",
+                            "image": "urlImage",
+                            "releaseYear": "YYYY"
+                        }
+                    ]
+                }
+            },
+            "GetMovieBy": {
+                "type": "object",
+                "example": {
+                    "results": {
+                        "_id": "(uuidv4)",
+                        "title": "movieTitle",
+                        "image": "movieImage",
+                        "rated": "movieRated",
+                        "releaseYear": "YYYY",
+                        "characters": [
+                            {
+                                "character": {}
+                            }
+                        ],
+                        "createdAt": "Date",
+                        "updatedAt": "Date"
+                    }
+                }
+            },
+            "GetMovies": {
+                "type": "object",
+                "example": {
+                    "results": [
+                        {
+                            "movie": {
+                                "_id": "(uuidv4)",
+                                "title": "movieTitle",
+                                "image": "movieImage",
+                                "rated": "movieRated",
+                                "releaseYear": "YYYY",
+                                "characters": [
+                                    {
+                                        "character": {}
+                                    }
+                                ],
+                                "createdAt": "Date",
+                                "updatedAt": "Date"
+                            }
+                        }
+                    ]
+                }
+            },
+            "PostMovie": {
+                "type": "object",
+                "example": {
+                    "results": "movie created"
+                }
+            },
+            "PutMovie": {
+                "type": "object",
+                "example": {
+                    "results": "movie updated"
+                }
+            },
+            "DeleteMovie": {
+                "type": "object",
+                "example": {
+                    "results": "movie deleted"
+                }
+            },
+            "UpdatedMovie": {
+                "type": "object",
+                "example": {
+                    "results": "movie updated"
+                }
+            },
+            "DeleteCharacter": {
+                "type": "object",
+                "example": {
+                    "results": "character deleted"
+                }
+            },
+            "GetAllCharacters": {
+                "type": "object",
+                "example": {
+                    "results": [
+                        {
+                            "_id": "(uuidv4)",
+                            "name": "nameCharacter",
+                            "image": "imageCharacter"
+                        }
+                    ]
+                }
+            },
+            "GetAllGenders": {
+                "type": "object",
+                "example": {
+                    "results": [
+                        {
+                            "_id": "(uuidv4)",
+                            "name": "nameGender",
+                            "image": "imageGender"
+                        }
+                    ]
+                }
+            },
+            "PostGender": {
+                "type": "object",
+                "example": {
+                    "results": "gender created"
+                }
+            },
+            "GetGenderBy": {
+                "type": "object",
+                "example": {
+                    "results": {
+                        "_id": "(uuidv4)",
+                        "name": "genderName",
+                        "image": "imageGender",
+                        "movies": [
+                            {
+                                "movie": {}
+                            }
+                        ],
+                        "createdAt": "Date",
+                        "updatedAt": "Date"
+                    }
+                }
+            },
+            "UpdateGender": {
+                "type": "object",
+                "example": {
+                    "results": "gender updated"
+                }
+            },
+            "DeleteGender": {
+                "type": "object",
+                "example": {
+                    "results": "gender deleted"
+                }
+            },
+            "GetCharacterBy": {
+                "type": "object",
+                "example": {
+                    "results": [
+                        {
+                            "_id": "(uuidv4)",
+                            "name": "nameCharacter",
+                            "image": "imageCharacter",
+                            "age": "ageCharacter",
+                            "history": "historyCharacter",
+                            "movies": [
+                                {
+                                    "movie": {}
+                                }
+                            ],
+                            "createdAt": "Date",
+                            "updatedAt": "Date"
+                        }
+                    ]
+                }
+            },
+            "GetCharacterById": {
+                "type": "object",
+                "example": {
+                    "results": {
+                        "_id": "(uuidv4)",
+                        "name": "nameCharacter",
+                        "image": "imageCharacter",
+                        "age": "ageCharacter",
+                        "history": "historyCharacter",
+                        "movies": [
+                            {
+                                "movie": {}
+                            }
+                        ],
+                        "createdAt": "Date",
+                        "updatedAt": "Date"
+                    }
+                }
+            },
+            "GetCharactersFromMovie": {
+                "type": "object",
+                "example": {
+                    "results": [
+                        {
+                            "character": {
+                                "_id": "(uuidv4)",
+                                "name": "nameCharacter",
+                                "image": "imageCharacter",
+                                "age": "ageCharacter",
+                                "history": "historyCharacter",
+                                "movies": [
+                                    {
+                                        "movie": {}
+                                    }
+                                ],
+                                "createdAt": "Date",
+                                "updatedAt": "Date"
+                            }
+                        }
+                    ]
+                }
+            },
+            "UpdateCharacter": {
+                "type": "object",
+                "example": {
+                    "results": "character updated"
+                }
+            },
+            "UserCreated": {
+                "type": "object",
+                "example": { "results": "user created" }
+            },
+            "LoginToken": {
+                "type": "object",
+                "example": { "token": "jwt" }
+            },
+            "UserUpdate": {
+                "type": "object",
+                "example": { "results": "user updated" }
+            },
+            "UserDeleted": {
+                "type": "object",
+                "example": { "results": "user deleted" }
+            },
+            "PostCharacter": {
+                "type": "object",
+                "example": { "results": "character created" }
+            }
+        },
+        "responseErrorBodies": {
+            "Unauthorized": {
+                "type": "object",
+                "example": { "errors": "user unauthorized" }
+            },
+            "WrongFields": {
+                "type": "object",
+                "example": { "errors": ["Wrong fields..."] }
+            },
+            "BothNotFound": {
+                "type": "object",
+                "example": {
+                    "errors": "Movie | Character | Gender => not found"
+                }
+            },
+            "UserConflic": {
+                "type": "object",
+                "example": { "errors": "user conflict" }
+            },
+            "MovieNotFound": {
+                "type": "object",
+                "example": { "errors": "movie not found" }
+            },
+            "MovieConflict": {
+                "type": "object",
+                "example": { "errors": "movie conflict" }
+            },
+            "CharacterConflict": {
+                "type": "object",
+                "example": { "errors": "character conflict" }
+            },
+            "CharacterNotFound": {
+                "type": "object",
+                "example": { "errors": "character not found" }
+            },
+            "OrderNotFound": {
+                "type": "object",
+                "example": { "errors": "ASC|DESC" }
+            },
+            "GenderNotFound": {
+                "type": "object",
+                "example": { "errors": "gender not found" }
+            },
+            "GenderConflict": {
+                "type": "object",
+                "example": { "errors": "gender conflict" }
+            }
+        }
+    },
+    "tags": ["Movies", "Genders", "Characters", "Users"]
+}

@@ -46,7 +46,8 @@ export class MoviesRepository {
         await this.persistence.deleteById(this.entity, id);
 
     public getMoviesSorted = async (
-        sortBy: object
+        sortBy: object,
+        projection: object
     ): Promise<IMovie[] | NullExpression> =>
-        await this.persistence.getAllSorted(this.entity, sortBy);
+        await this.persistence.getAllSorted(this.entity, sortBy, projection);
 }
