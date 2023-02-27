@@ -6,3 +6,5 @@ import { createServer } from 'http';
 const { app } = new ExpressApplication(express(), new Routes());
 
 export const httpServer = createServer(app);
+
+export default app;

@@ -24,10 +24,11 @@ module.exports = {
                     '@lib': './src/lib',
                     '@repositories': './src/repositories',
                     '@routes': './src/routes',
-                    '@schemas': './srcschemas',
+                    '@schemas': './src/schemas',
                     '@services': './src/services',
                     '@utils': './src/utils',
-                    '@docs': './src/docs'
+                    '@docs': './src/docs',
+                    '@test': './src/test'
                 }
             }
         ]

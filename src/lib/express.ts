@@ -2,6 +2,7 @@ import swaggerDoc from '@docs/documentation.json';
 import randomRoute from '@routes/random.routes';
 import { Routes } from '@routes/routes';
 import { PUBLIC_PATH } from '@utils/paths';
+import cors from 'cors';
 import express, { Application, NextFunction, Request, Response } from 'express';
 import swaggerUiExpress from 'swagger-ui-express';
 
@@ -16,6 +17,7 @@ export class ExpressApplication {
         this.app.use(express.json());
         this.app.use(express.urlencoded({ extended: true }));
         this.app.use(express.static(PUBLIC_PATH));
+        this.app.use(cors());
         this.app.use(
             '/docs',
             swaggerUiExpress.serve,
