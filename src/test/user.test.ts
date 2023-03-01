@@ -1,6 +1,6 @@
 import { faker } from '@faker-js/faker';
 import test from 'ava';
-import got from 'got-cjs';
+import { to } from './utils/fetch';
 import { expectStatusCode } from './utils/status';
 
 faker.locale = 'en_US';
@@ -25,20 +25,28 @@ test.before(() => {
         `);
 });
 
-test('Register Succesfully', async (t) => {
-    const response = await got.post(
+test.serial('Register Succesfully', async (t) => {
+    const response = await to(
+        t,
+        'POST',
         'http://localhost:8080/api/v1/auth/register',
-        {
-            json: {
-                username: 'qasdasdsad',
-                email: 'abc.abc.com',
-                password: 'qwertyqw'
-            },
-            throwHttpErrors: false
-        }
+        {},
+        USER_A
     );
 
-    expectStatusCode(t, 400, response);
+    expectStatusCode(t, 201, response);
+});
+
+test.serial('Register Failed - Duplicated email', async (t) => {
+    const response = await to(
+        t,
+        'POST',
+        'http://localhost:8080/api/v1/auth/register',
+        {},
+        { ...USER_B, email: USER_A.email }
+    );
+
+    expectStatusCode(t, 409, response);
 });
 
 test.after.always(() => {
